@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block titulo %}
+	<title>Mi perfil</title>
+{% endblock titulo %}
+
+{% block contenido %}
+	<p>Actualizar perfil de <i>{{form.username}}</i></p>
+	<form method="POST" action="{% url 'guardarPerfilUsuario_u' form.id %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		  <input type="text" name="id" value="{{ form.id }}" hidden>
+		  <div class="form-group">
+		    <label for="username">Nombre de Usuario</label>
+		    <input type="text" class="form-control" id="username" placeholder="Usuario" value="{{form.username}}" name="username" required>
+		  </div>
+		  <div class="form-group">
+		    <label for="nombres">Nombres</label>
+		    <input type="text" class="form-control" id="nombres" placeholder="Nombres" value="{{form.first_name}}" name="first_name" required>
+		  </div>
+		    <div class="form-group">
+			    <label for="cargo">Cargos</label>
+			    <select class="form-control" id="cargo" name="cargo">
+			    	<option>-----</option>
+					{% for obj in cargos %}
+						{% if obj.nombre_perfil == extend.perfil.nombre_perfil %}
+							<option value="{{ obj.id }}" selected="True">{{ obj.nombre_perfil }}</option>
+						{% else %}
+							<option value="{{ obj.id }}">{{ obj.nombre_perfil }}</option>
+						{% endif %}
+						
+					{% endfor %}
+			    </select>
+			</div>
+		  <div class="form-group">
+		    <label for="apellidos">Apellidos</label>
+		    <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" value="{{form.last_name}}" name="last_name">
+		  </div>
+		  <div class="form-group">
+		    <label for="correo">Correo</label>
+		    <input type="email" class="form-control" id="correo" placeholder="Correo" value="{{form.email}}" name="email" required>
+		  </div>
+	
+		  {% if extend.imagen %}
+					<center><img class="card-img-top generic img-responsive" src="{{ extend.imagen.url }}" alt="Imagen del Post" height="100" width="100"></center>
+		  {% else %}
+					<center><img class="card-img-top generic img-responsive" src="{% static 'img/user.png' %}" alt="Imagen del Post predeterminada" height="100" width="100"></center>
+		  {% endif %}
+
+		  <div class="form-group">
+		    <label for="imagen">Imagen de Perfil</label>
+		    <input type="file" class="form-control" id="imagen" name="imagen" required>
+		  </div>
+		<button class="btn btn-primary" type="submit">Actualizar</button>
+		<a class="btn btn-primary" href="{% url 'list_p' %}" role="button">Volver</a>
+	</form>
+{% endblock contenido %}

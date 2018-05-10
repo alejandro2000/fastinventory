@@ -1,0 +1,86 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+
+{% block titulo %}
+	<title>Productos</title>
+{% endblock titulo %}
+
+{% block contenido %}
+  {% if messages %}
+    <ul class="messages">
+      <ul class="messages">
+          {% for message in messages %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>{% if message.tags %}{% endif %}{{ message }}.</strong>
+        </div>
+          <li</li>
+          {% endfor %}
+      </ul>
+    </ul>
+  {% endif %}
+  
+  <div class="row">
+      <div class="col-12">
+        <div id="principal_carousel" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+              <li data-target="#principal_carousel" data-slide-to="0" class="active"></li>
+              <li data-target="#principal_carousel" data-slide-to="1"></li>
+              <li data-target="#principal_carousel" data-slide-to="2"></li>
+              <li data-target="#principal_carousel" data-slide-to="3"></li>
+            </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="{{ instance.imagen1.url }}" class="img-fluid" style="height: 300px;" width="100%">
+                <div class="carousel-caption d-none d-md-block">
+                  <h3 class="banner">Tu producto ideal</h3>
+                </div>
+            </div>
+            <div class="carousel-item">
+              <img src="{{ instance.imagen2.url }}" class="img-fluid" style="height: 300px;" width="100%">
+            </div>
+            <div class="carousel-item">
+              <img src="{{ instance.imagen3.url }}" class="img-fluid" style="height: 300px;" width="100%">
+            </div>
+            <div class="carousel-item">
+              <img src="{{ instance.imagen4.url }}" class="img-fluid" style="height: 300px;" width="100%">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#principal_carousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#principal_carousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Siguiente</span>
+            </a>
+        </div>
+      </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-block">
+      <p class="card-text">{{ instance.titulo }}</p>
+  		<p>{{ instance.contenido }}</p>
+  		<p>Precio: <i>{{ instance.precio }}</i></p>
+      <a class="btn btn-primary" href="{% url 'productos' %}" role="button">Volver</a>
+      <a class="btn btn-primary" href="{% url 'delete' instance.slug %}" role="button">Eliminar</a>
+      <a class="btn btn-primary" href="{% url 'update' instance.slug %}" role="button">Actualizar</a>
+      <form method="post">
+          <div class="row" style="margin-top: 2%;">
+            <div class="col-2">
+              <div class="form-group">
+                <input type="number" class="form-control" id="cantidad" value="1" name="cantidad" required min="1" max="{{ instance.cantidad }}">
+              </div>
+            </div>
+            <div class="col-1">
+              <a class="btn btn-success" href="{% url 'agregar_carrito' instance.slug 1 %}" role="button" title="añadir al carrito."><i class="fas fa-shopping-cart"></i></a></div>
+          </div>
+      </form>
+    </div>
+  </div>
+    <br>
+
+{% endblock %}

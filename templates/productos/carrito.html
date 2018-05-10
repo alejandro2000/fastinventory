@@ -1,0 +1,11 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}
+	<title>Carrito</title>
+{% endblock titulo %}
+
+{% block contenido %}
+	{% if 'productos' %}
+		<p>{{ productos }}</p>
+	{% endif %}
+{% endblock contenido %}

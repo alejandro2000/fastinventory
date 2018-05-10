@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+
+{% block titulo %}
+	<title>Usuarios</title>
+{% endblock titulo %}
+
+{% block contenido %}
+
+	<div class="row justify-content-start" style="margin-bottom: 20px;">
+		<div class="col-auto">
+			<form class="form-inline my-2 my-lg-0" method="GET" action="">
+		      <input class="form-control mr-sm-2" type="text" placeholder="Buscar" name="q" value="{{ request.GET.q }}">
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+		    </form>
+		</div>
+	</div>
+
+	<div class="row">
+		{% for obj in contacts %}
+
+			<div class="col-12 col-sm-6 col-md-4 card">
+				<div class="card-block">
+					{% if obj.imagen %}
+						<center><img class="img-fluid card-img-top" src="{{ obj.imagen.url }}" alt="Imagen del Post" width="150"></center>
+					{% else %}
+						<center><img class="img-fluid card-img-top" src="{% static 'img/user.png' %}" alt="Imagen del Post predeterminada"width="150"></center>
+					{% endif %}
+				</div>
+				<div class="card-block">
+					<p class="card-text"><a href="{% url 'detalle_u' obj.user.id %}">{{ obj.user.username }}</a></p>
+					<hr>
+					<p>
+						<small>Correo Electrónico: <b>{{ obj.user.email }}</b></small>
+					</p>
+				</div>
+			</div>
+
+		{% endfor %}
+	</div>
+
+	<div class="row justify-content-center">
+		<div class="col-auto pagination">
+		    <span class="step-links">
+		        {% if contacts.has_previous %}
+		            <a class="btn btn-outline-primary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; Primero</a>
+		            <a class="btn btn-outline-primary" href="?page={{ contacts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a>
+		        {% endif %}
+
+		        <span class="current lead">
+		            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}
+		        </span>
+
+		        {% if contacts.has_next %}
+		            <a class="btn btn-outline-primary" href="?page={{ contacts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a>
+		            <a class="btn btn-outline-primary" href="?page={{ contacts.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ultimo &raquo;</a>
+		        {% endif %}
+		    </span>
+		</div>
+	</div>
+
+{% endblock contenido %}

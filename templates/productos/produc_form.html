@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}
+	<title>Productos</title>
+{% endblock titulo %}
+
+{% block contenido %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+	<div class="form-group">
+		<label for="nombre">Nombre del Producto</label>
+		<input type="text" class="form-control" id="nombre" placeholder="inserta el nombre del producto" name="titulo" required {% if instance %}
+			value="{{ instance.titulo }}" 
+		{% endif %}>
+	</div>
+	<div class="form-group">
+		<label for="desc">Descripción</label>
+		<textarea class="form-control" id="desc" name="contenido" rows="4" required>{% if instance %}{{ instance.contenido }}{% endif %}</textarea>
+	</div>
+	<div class="form-group">
+		<label for="img1">Imagen Uno</label>
+		<input type="file" class="form-control" id="img1" placeholder="Imagen de referencia 1" name="imagen1" required>
+	</div>
+	<div class="form-group">
+		<label for="img2">Imagen Dos</label>
+		<input type="file" class="form-control" id="img2" placeholder="Imagen de referencia 2" name="imagen2" required>
+	</div>
+	<div class="form-group">
+		<label for="img3">Imagen Tres</label>
+		<input type="file" class="form-control" id="img3" placeholder="Imagen de referencia 3" name="imagen3" required>
+	</div>
+	<div class="form-group">
+		<label for="img4">Imagen Cuatro</label>
+		<input type="file" class="form-control" id="img4" placeholder="Imagen de referencia 4" name="imagen4" required>
+	</div>
+	<div class="form-group">
+		<label for="precio">Precio del Producto</label>
+		<input type="number" class="form-control" id="precio" placeholder="Cuanto costará el producto" name="precio" required {% if instance %}
+			value="{{ instance.precio }}" 
+		{% endif %}>
+	</div>
+	<div class="form-group">
+		<label for="cantidad">Cantidad</label>
+		<input type="number" class="form-control" id="cantidad" placeholder="Cuanto costará el producto" name="cantidad" required {% if instance %}
+			value="{{ instance.cantidad }}" 
+		{% endif %} min="1">
+	</div>
+	<button class="btn btn-primary" type="submit">Enviar</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+.titulo{
+	font-family: 'Raleway', bold;
+	font-size: 28px;
+}
+
+.texto{
+	font-family: 'Raleway';
+	font-size: 18px;
+	text-shadow: 4px 4px 4px #aaa;
+}
+
+.imagenesp{
+	margin-left: 37%; 
+	margin-top: 14%; 
+	margin-bottom: 15%;
+}
+
+.trabajador{
+	margin-left: 41%; 
+	margin-top: 10%; 
+	margin-bottom: 2%;
+}
+
+.nombres{
+	font-family: 'Berkshire Swash', cursive;
+}
+
+.banner{
+	font-family: 'Ubuntu', sans-serif;
+	color: black;
+	text-shadow:5px 5px 10px gray;
+}
+
+.bannersub{
+	font-family: 'Kanit', sans-serif;
+	font-size: 1.1em;
+	color: black;
+	text-shadow:5px 5px 10px gray;
+}
