@@ -54,14 +54,87 @@ def producto_delete(request, slug=None):
     messages.success(request, "Producto eliminado")
     return redirect('productos')
 
-def agregarAlCarrito(request, slug=None, cant=None):
-    if "productos" in request.session:
-        request.session["productos"].append([slug,cant])
+def agregarAlCarrito(request):
+    #agregar al carrito los productos
+    if "carrito" in request.session and "cantidades" in request.session:
+        cod = request.POST['cod']
+        cant = request.POST['cantidad']
+
+        lista = request.session["carrito"]
+        lista.append(cod)
+        request.session["carrito"] = lista
+
+        #agregar las cantidades de cada producto
+
+        listacantidad = request.session["cantidades"]
+        listacantidad.append(cant)
+        request.session["cantidades"] = listacantidad
     else:
-        request.session["productos"]= [slug,cant];
-    messages.success(request, slug + " agregado con exito")
-    return redirect('productos')
+        request.session['carrito'] = []
+        request.session['cantidades'] = []
+
+        cod = request.POST['cod']
+        cant = request.POST['cantidad']
+
+        lista = request.session["carrito"]
+        lista.append(cod)
+        request.session["carrito"] = lista
+
+        #agregar las cantidades de cada producto
+
+        listacantidad = request.session["cantidades"]
+        listacantidad.append(cant)
+        request.session["cantidades"] = listacantidad
+
+
+    
+    return redirect('ver_carrito')
 
 def carrito(request):
-    productos= {'slug':'motocicleta','codigo':1}
-    return render(request,'productos/carrito.html',{'productos':productos})
+    """productos= ["computador",1,"tablet",2]
+    productos.append("celular")
+    productos.append(3)
+
+    nombres = []
+    codigos = []
+
+    for i in range(len(productos)):
+        if (i%2==0):            
+            nombres.append(productos[i])
+        else:
+            codigos.append(productos[i])
+
+    pro = productos.index("tablet")
+    del productos[pro]"""
+    if "carrito" in request.session and "cantidades" in request.session:
+        objs=[]
+        cants=[]
+        for i in request.session["carrito"]:
+            pro = get_object_or_404(producto, id=i)
+            objs.append(pro)
+
+        for c in request.session["cantidades"]:
+            cants.append(c)
+
+        contexto = {
+            'carro': objs,
+            'cantidades': cants,
+        }
+    else:
+        request.session['carrito'] = []
+        request.session['cantidades'] = []
+        objs=[]
+        cants=[]
+        for i in request.session["carrito"]:
+            pro = get_object_or_404(producto, id=i)
+            objs.append(pro)
+
+        for c in request.session["cantidades"]:
+            cants.append(c)
+
+        contexto = {
+            'carro': objs,
+            'cantidades': cants,
+        }
+
+    return render(request,'productos/carrito.html',contexto)

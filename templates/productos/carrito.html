@@ -5,7 +5,11 @@
 {% endblock titulo %}
 
 {% block contenido %}
-	{% if 'productos' %}
-		<p>{{ productos }}</p>
+	{% if carro and cantidades %}
+		{% for i in carro %}
+			<p>{{ i.titulo }} {{ i.precio }}</p>
+		{% endfor %}
+	{% else %}
+		<h4>No hay productos en el carrito</h4>
 	{% endif %}
 {% endblock contenido %}

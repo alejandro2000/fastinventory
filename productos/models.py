@@ -64,3 +64,25 @@ def pre_save_post_receiver(sender , instance, *args, **kwargs):
         instance.slug = create_slug(instance)
 
 pre_save.connect(pre_save_post_receiver, sender=producto)
+
+# modelos de facturación
+
+class estadosFactura(models.Model):
+    nombre_estado = models.CharField(max_length=30,default='en proceso')
+
+class tipoVenta(models.Model):
+    tipo = models.CharField(max_length=30)
+
+class factura(models.Model):
+    paisEnvio = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True, auto_now=False)
+    tipo = models.ForeignKey(tipoVenta, on_delete=models.CASCADE)
+    estado_proceso = models.ForeignKey(estadosFactura, on_delete=models.CASCADE)
+
+class detalleFactura(models.Model):
+    idfactura = models.ForeignKey(factura, on_delete=models.CASCADE)
+    idProducto = models.ForeignKey(producto, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(default=1)
+    sub_total = models.IntegerField(default=0)
+

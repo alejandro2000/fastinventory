@@ -27,13 +27,26 @@
 
 .banner{
 	font-family: 'Ubuntu', sans-serif;
-	color: black;
-	text-shadow:5px 5px 10px gray;
+	color: white;
+	text-shadow:5px 5px 10px black;
 }
 
 .bannersub{
 	font-family: 'Kanit', sans-serif;
 	font-size: 1.1em;
-	color: black;
-	text-shadow:5px 5px 10px gray;
+	color: white;
+	text-shadow:5px 5px 10px black;
+}
+
+.links{
+	text-decoration: none;
+}
+
+#te{
+	text-decoration: none;
+}
+
+.estil{
+	color: white;
+	
 }

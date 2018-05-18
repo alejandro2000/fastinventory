@@ -68,15 +68,19 @@
       <a class="btn btn-primary" href="{% url 'productos' %}" role="button">Volver</a>
       <a class="btn btn-primary" href="{% url 'delete' instance.slug %}" role="button">Eliminar</a>
       <a class="btn btn-primary" href="{% url 'update' instance.slug %}" role="button">Actualizar</a>
-      <form method="post">
+
+      <form method="POST" action="{% url 'agregar_carrito' %}">
+          {% csrf_token %}
           <div class="row" style="margin-top: 2%;">
             <div class="col-2">
+              <input type="number" class="form-control" value="{{ instance.id }}" name="cod" required readonly hidden>
               <div class="form-group">
                 <input type="number" class="form-control" id="cantidad" value="1" name="cantidad" required min="1" max="{{ instance.cantidad }}">
               </div>
             </div>
             <div class="col-1">
-              <a class="btn btn-success" href="{% url 'agregar_carrito' instance.slug 1 %}" role="button" title="añadir al carrito."><i class="fas fa-shopping-cart"></i></a></div>
+              <button class="btn btn-success" type="submit" title="añadir al carrito"><i class="fas fa-shopping-cart"></i></button>
+            </div>
           </div>
       </form>
     </div>

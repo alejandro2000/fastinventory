@@ -26,7 +26,7 @@ def up_load_location(instance, filename): #esto nos sirve para guardar imagenes 
 	return "%s/%s" %(instance.id, filename)
 
 class user2(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	imagen = models.ImageField(upload_to=up_load_location,
 		null=True, 
 		blank=True,
@@ -36,6 +36,8 @@ class user2(models.Model):
 	width_field = models.IntegerField(default=0, null=True)
 	edad = models.IntegerField(default=0)
 	tarjetaCredito = models.IntegerField(default=0)
+	direccion = models.CharField(max_length=50)
+	telefono = models.IntegerField(default=0)
 	fechaRegistro = models.DateTimeField(auto_now_add=True, auto_now=False)
 	estado = models.ForeignKey(estados, on_delete=models.CASCADE, default=1, null=True, blank=True)
 	perfil = models.ForeignKey(perfiles, on_delete=models.CASCADE, null=True, blank=True, default=1)

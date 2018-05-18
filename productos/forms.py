@@ -14,3 +14,4 @@ class ProductoForm(forms.ModelForm):
             "precio",
             "cantidad",
         ]
+

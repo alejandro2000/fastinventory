@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    #Aplicaciones externas
+
+    'ckeditor',
+
     #Apps registradas
 
     'posts',
@@ -156,3 +160,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static_media_cdn")
 LOGIN_REDIRECT_URL = reverse_lazy('index_p')
 
 LOGOUT_REDIRECT_URL = reverse_lazy('index_p')
+
+# ckeditor
+CKEDITOR_UPLOAD_PATH = "uploads/"

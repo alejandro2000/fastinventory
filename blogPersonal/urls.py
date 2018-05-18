@@ -24,10 +24,13 @@ from usuario import views
 from informacion import views
 from productos import views
 
+from django.conf.urls import url, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', include("posts.urls")),
+
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     path('usuario/', include("usuario.urls")),
     path('productos/', include("productos.urls")),
     path('accounts/login/', login, {'template_name':'usuario/usuarioIngresar.html'}, name='ingresoUsuarios_u'),

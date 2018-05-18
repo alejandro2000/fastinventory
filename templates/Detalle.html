@@ -23,8 +23,7 @@
 			    	<p>
 			    		<small>Autor De La Publicación: <b>{{ hola2 }}</b></small>
 			    	</p>
-					<p>{{ consulta.contenido}}</p>
-
+					{{ consulta.contenido|safe }}
 					<em style="display: block">Animate a compartir este contenido en redes sociales</em>
 
 					<a target="blank" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri}}">
