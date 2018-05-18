@@ -1,39 +1,69 @@
-{% extends "base/base.html" %}
-
-
-{% block titulo %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ingreso</title>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+	<script src="{% static 'js/login.js' %}"></script>
+	<link rel="shortcut icon" href="{% static 'img/fastinventory.ico' %}" />
 	<title>Crear Usuario</title>
-{% endblock titulo %}
-
-{% block contenido %}
-	<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-
-		<div class="form-group">
-		    <label for="nombreusu">Nombre de Usuario</label>
-		    <input type="text" class="form-control" id="nombreusu" placeholder="Nombre de Usuario" name="username" required>
-		 </div>
-		 <div class="form-group">
-		    <label for="nombres">Nombres</label>
-		    <input type="text" class="form-control" id="nombres" placeholder="Nombres" name="first_name" required>
-		 </div>
-		 <div class="form-group">
-		    <label for="apellidos">Apellidos</label>
-		    <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" name="last_name">
-		 </div>
-		 <div class="form-group">
-		    <label for="correo">Correo</label>
-		    <input type="email" class="form-control" id="correo" placeholder="Correo" name="email" required>
-		 </div>
-		 <div class="form-group">
-		    <label for="contraseña">contraseña</label>
-		    <input type="password" class="form-control" id="contraseña" placeholder="contraseña 1" name="password1" required>
-		 </div>
-		 <div class="form-group">
-		    <label for="contraseña1">Repita contraseña</label>
-		    <input type="password" class="form-control" id="contraseña1" placeholder="contraseña 2" name="password2" required>
-		 </div>
-		<button class="btn btn-primary" type="submit">Crear</button>
-	</form>
-
-{% endblock contenido %}
+</head>
+<body style="background-image: url('{% static 'img/cancha.jpg' %}');background-size: cover;background-attachment: fixed;">
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-12">
+	            <div class="wrap">
+	                <p class="form-title">
+	                    Ingreso</p>
+	                <form class="login" method="post">
+	                	{% csrf_token %}
+		                <div class="form-group">
+						    <label for="nombreusu">Nombre de Usuario</label>
+						    <input type="text" class="form-control" id="nombreusu" placeholder="Nombre de Usuario" name="username" required>
+						 </div>
+						 <div class="form-group">
+						    <label for="nombres">Nombres</label>
+						    <input type="text" class="form-control" id="nombres" placeholder="Nombres" name="first_name" required>
+						 </div>
+						 <div class="form-group">
+						    <label for="apellidos">Apellidos</label>
+						    <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" name="last_name">
+						 </div>
+						 <div class="form-group">
+						    <label for="correo">Correo</label>
+						    <input type="email" class="form-control" id="correo" placeholder="Correo" name="email" required>
+						 </div>
+						 <div class="form-group">
+						    <label for="contraseña">contraseña</label>
+						    <input type="password" class="form-control" id="contraseña" placeholder="contraseña 1" name="password1" required>
+						 </div>
+						 <div class="form-group">
+						    <label for="contraseña1">Repita contraseña</label>
+						    <input type="password" class="form-control" id="contraseña1" placeholder="contraseña 2" name="password2" required>
+						 </div>
+						<button class="btn btn-primary" type="submit">Crear</button>
+		                <div class="remember-forgot">
+		                    <div class="row">
+		                        <div class="col-md-6">
+		                            <div class="checkbox">
+		                                <label>		         
+		                                </label>
+		                            </div>
+		                        </div>
+		                        <div class="col-md-6 forgot-pass-content">
+		                            <a href="{% url 'index_p' %}" class="forgot-pass">¿Ya tienes una cuenta?</a>
+		                        </div>
+		                    </div>
+		                </div>
+	                </form>
+	                
+	            </div>
+	        </div>
+	    </div>
+	</div>	
+</body>
+</html>
