@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.conf import settings
 from django.db.models.signals import pre_save
 
+
 # Create your models here.
 def up_load_location(instance, filename): #esto nos sirve para guardar imagenes por carpetas según el id
     return "%s/%s" %(instance.id, filename)
@@ -70,19 +71,37 @@ pre_save.connect(pre_save_post_receiver, sender=producto)
 class estadosFactura(models.Model):
     nombre_estado = models.CharField(max_length=30,default='en proceso')
 
+    def __str__(self):
+        return self.nombre_estado
+
 class tipoVenta(models.Model):
     tipo = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.tipo
 
 class factura(models.Model):
     paisEnvio = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True, auto_now=False)
     tipo = models.ForeignKey(tipoVenta, on_delete=models.CASCADE)
-    estado_proceso = models.ForeignKey(estadosFactura, on_delete=models.CASCADE)
+    estado_proceso = models.ForeignKey(estadosFactura, on_delete=models.CASCADE, default=1)
+    comprobacion = models.ImageField(
+        null=True,
+        blank=True,
+        height_field="height_field2",
+        width_field="width_field2")
+    height_field2 = models.IntegerField(default=0)
+    width_field2 = models.IntegerField(default=0)
+
+
 
 class detalleFactura(models.Model):
     idfactura = models.ForeignKey(factura, on_delete=models.CASCADE)
     idProducto = models.ForeignKey(producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField(default=1)
-    sub_total = models.IntegerField(default=0)
+
+
+
+
 

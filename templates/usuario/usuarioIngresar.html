@@ -13,43 +13,57 @@
 </head>
 <body style="background-image: url('{% static 'img/cancha.jpg' %}');background-size: cover;background-attachment: fixed;">
 	<div class="container">
-	    <div class="row">
-	        <div class="col-md-12">
-	            <div class="pr-wrap">
-	                <div class="pass-reset">
-	                    <label>
-	                        Ingrese su correo para recuperarla</label>
-	                    <input type="email" placeholder="Correo" />
-	                    <input type="submit" value="Enviar" class="pass-reset-submit btn btn-success btn-sm" />
-	                </div>
-	            </div>
-	            <div class="wrap">
-	                <p class="form-title">
-	                    Ingreso</p>
-	                <form class="login" method="post">
-	                	{% csrf_token %}
-		                <input type="text" placeholder="Usuario" name="username" />
-		                <input type="password" placeholder="contraseña" name="password" />
-		                <input type="submit" value="Ingresar" class="btn btn-success btn-sm" />
-		                <div class="remember-forgot">
-		                    <div class="row">
-		                        <div class="col-md-6">
-		                            <div class="checkbox">
-		                                <label>
-		                                    <a href="{% url 'crearUsuario_u' %}">registrate</a>
-		                                </label>
-		                            </div>
-		                        </div>
-		                        <div class="col-md-6 forgot-pass-content">
-		                            <a href="javascript:void(0)" class="forgot-pass">Olvidaste la contraseña</a>
-		                        </div>
-		                    </div>
+		{% block logeo %}
+		    <div class="row">
+		        <div class="col-md-12">
+		            <div class="pr-wrap">
+		                <div class="pass-reset">
+		                    <label>Presione en este link para llenar el formulario de recuperación</label>
+		                    <a href="{% url 'password_reset' %}" style="text-decoration: none;">Formulario de recuperación</a>
 		                </div>
-	                </form>
-	                
-	            </div>
-	        </div>
-	    </div>
+		            </div>
+		            <div class="wrap">
+		                <p class="form-title">
+		                    Ingreso</p>
+		                <form class="login" method="post">
+		                	{% csrf_token %}
+			                <input type="text" placeholder="Usuario" name="username" />
+			                <input type="password" placeholder="contraseña" name="password" />
+			                <input type="submit" value="Ingresar" class="btn btn-success btn-sm" />
+			                <div class="remember-forgot">
+			                    <div class="row">
+			                        <div class="col-md-6">
+			                            <div class="checkbox">
+			                                <label>
+			                                    <a href="{% url 'crearUsuario_u' %}">registrate</a>
+			                                </label>
+			                            </div>
+			                        </div>
+			                        <div class="col-md-6 forgot-pass-content">
+			                            <a href="javascript:void(0)" class="forgot-pass">Olvidaste la contraseña</a>
+			                        </div>
+			                    </div>
+			                </div>
+			                {% if form.errors %}
+							    {% for field in form %}
+							        {% for error in field.errors %}
+							            <div class="alert alert-error">
+							                <strong style="color:white">{{ error|escape }}</strong>
+							            </div>
+							        {% endfor %}
+							    {% endfor %}
+							    {% for error in form.non_field_errors %}
+							        <div class="alert alert-error">
+							            <strong style="color:white">{{ error|escape }}</strong>
+							        </div>
+							    {% endfor %}
+							{% endif %}
+		                </form>
+		                
+		            </div>
+		        </div>
+		    </div>
+	    {% endblock logeo %}
 	</div>	
 </body>
 </html>

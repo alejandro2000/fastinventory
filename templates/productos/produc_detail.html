@@ -1,90 +1,92 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
+{% load humanize %}
+{% block personalizado %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detalleproducto.css' %}">
+{% endblock personalizado %}
 
 {% block titulo %}
-	<title>Productos</title>
+	<title>Producto</title>
 {% endblock titulo %}
 
-{% block contenido %}
-  {% if messages %}
-    <ul class="messages">
-      <ul class="messages">
-          {% for message in messages %}
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <strong>{% if message.tags %}{% endif %}{{ message }}.</strong>
+{% block contenidomain %}
+  <div class="col-12">
+    <div class="container">
+      
+    <div class="row">
+      {% if messages %}
+        <div class="col-12">        
+          <ul class="messages">
+              {% for message in messages %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>{% if message.tags %}{% endif %}{{ message }}.</strong>
+            </div>
+              <li</li>
+              {% endfor %}
+          </ul>
         </div>
-          <li</li>
-          {% endfor %}
-      </ul>
-    </ul>
-  {% endif %}
-  
-  <div class="row">
-      <div class="col-12">
-        <div id="principal_carousel" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-              <li data-target="#principal_carousel" data-slide-to="0" class="active"></li>
-              <li data-target="#principal_carousel" data-slide-to="1"></li>
-              <li data-target="#principal_carousel" data-slide-to="2"></li>
-              <li data-target="#principal_carousel" data-slide-to="3"></li>
-            </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="{{ instance.imagen1.url }}" class="img-fluid" style="height: 300px;" width="100%">
-                <div class="carousel-caption d-none d-md-block">
-                  <h3 class="banner">Tu producto ideal</h3>
-                </div>
-            </div>
-            <div class="carousel-item">
-              <img src="{{ instance.imagen2.url }}" class="img-fluid" style="height: 300px;" width="100%">
-            </div>
-            <div class="carousel-item">
-              <img src="{{ instance.imagen3.url }}" class="img-fluid" style="height: 300px;" width="100%">
-            </div>
-            <div class="carousel-item">
-              <img src="{{ instance.imagen4.url }}" class="img-fluid" style="height: 300px;" width="100%">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#principal_carousel" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Anterior</span>
-            </a>
-            <a class="carousel-control-next" href="#principal_carousel" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Siguiente</span>
-            </a>
-        </div>
-      </div>
-  </div>
-  
-  <div class="card">
-    <div class="card-block">
-      <p class="card-text">{{ instance.titulo }}</p>
-  		<p>{{ instance.contenido }}</p>
-  		<p>Precio: <i>{{ instance.precio }}</i></p>
-      <a class="btn btn-primary" href="{% url 'productos' %}" role="button">Volver</a>
-      <a class="btn btn-primary" href="{% url 'delete' instance.slug %}" role="button">Eliminar</a>
-      <a class="btn btn-primary" href="{% url 'update' instance.slug %}" role="button">Actualizar</a>
+      {% endif %}
 
-      <form method="POST" action="{% url 'agregar_carrito' %}">
-          {% csrf_token %}
-          <div class="row" style="margin-top: 2%;">
-            <div class="col-2">
-              <input type="number" class="form-control" value="{{ instance.id }}" name="cod" required readonly hidden>
-              <div class="form-group">
-                <input type="number" class="form-control" id="cantidad" value="1" name="cantidad" required min="1" max="{{ instance.cantidad }}">
+      {% if instance %}
+        <div class="container">
+          <div class="card"> 
+            <div class="container-fliud">
+              <div class="wrapper row">
+                <div class="preview col-md-6">
+                  
+                  <div class="preview-pic tab-content">
+                    <div class="tab-pane active" id="pic-1"><img src="{{ instance.imagen1.url }}" /></div>
+                    <div class="tab-pane" id="pic-2"><img src="{{ instance.imagen2.url }}" /></div>
+                    <div class="tab-pane" id="pic-3"><img src="{{ instance.imagen3.url }}" /></div>
+                    <div class="tab-pane" id="pic-4"><img src="{{ instance.imagen4.url }}" /></div>
+                  </div>
+                  <ul class="preview-thumbnail nav nav-tabs">
+                    <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src="{{ instance.imagen1.url }}" /></a></li>
+                    <li><a data-target="#pic-2" data-toggle="tab"><img src="{{ instance.imagen2.url }}" /></a></li>
+                    <li><a data-target="#pic-3" data-toggle="tab"><img src="{{ instance.imagen3.url }}" /></a></li>
+                    <li><a data-target="#pic-4" data-toggle="tab"><img src="{{ instance.imagen4.url }}" /></a></li>
+                  </ul>
+                  
+                </div>
+                <div class="details col-md-6">
+                  <h3 class="product-title">{{ instance.titulo }}</h3>
+                  <p class="product-description">{{ instance.contenido }}</p>
+                  <h4 class="price">Precio Actual: <span>$ {{ instance.precio|intcomma }}</span></h4>
+                  <p class="vote"><strong>Se el primero</strong> de tu circulo social en comprar este <strong>Producto</strong></p>
+                  <h5 class="sizes">Referencia:
+                    <span class="size" data-toggle="tooltip" title="small">{{ instance.id }}</span>
+                  </h5>
+                  <form method="post" action="{% url 'agregar_carrito' %}">
+                    {% csrf_token %}
+                    <h5 class="colors">Cantidad:</h5>
+                    <input type="number" name="cod" value="{{ instance.id }}" hidden>
+                    <div class="row" style="padding-bottom: 2%;">
+                      <div class="col-3">
+                        <select class="form-control auto" name="cantidad">
+                          {% for num in stock %}
+                            <option>{{ num }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="action">
+                      <button class="add-to-cart btn btn-default" type="submit">Añadir al carrito</button>
+                      <a class="like btn btn-default" href="{% url 'productos' %}"><i class="fas fa-chevron-circle-left"></i></a>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-            <div class="col-1">
-              <button class="btn btn-success" type="submit" title="añadir al carrito"><i class="fas fa-shopping-cart"></i></button>
-            </div>
           </div>
-      </form>
+        </div>
+      {% else %}
+        <h2>No Existe el producto referenciado</h2>
+      {% endif %}
+    </div>
     </div>
   </div>
-    <br>
-
-{% endblock %}
+  
+{% endblock contenidomain %}

@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from productos.models import producto
 
 # Create your models here.
+
+
 
 
 class perfiles(models.Model):
@@ -44,5 +47,10 @@ class user2(models.Model):
 
 	class Meta:
 		ordering = ["id"]
+
+class productosdeseados(models.Model):
+	id_producto  = models.ForeignKey(producto, on_delete=models.CASCADE)
+	id_user2 = models.ForeignKey(user2, on_delete=models.CASCADE)
+
 
 

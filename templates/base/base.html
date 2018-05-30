@@ -28,6 +28,9 @@
 
 </head>
 
+
+{% block todo %}
+		
 	
 
 <body>
@@ -40,8 +43,11 @@
 	
 	<div style="width: 100%;">		
 		{% block pagina %}
-		
+			
 			<div class="row" style="margin-top: 70px;margin-left: 0;width: 100%;">
+				{% block contenidomain %}
+			
+		
 				<div class="col-12 col-md-8">
 					{% block contenido %}
 						<p>Contenido base</p>
@@ -57,8 +63,9 @@
 						</ul>
 					{% endblock aside %}
 				</div>
+				
+				{% endblock contenidomain %}
 			</div>
-
 
 
 			{% block facebookComments %}
@@ -91,9 +98,7 @@
 	{% endblock piedepagina %}
 
 
-	{% block particulas %}
-		javascript
-	{% endblock particulas %}
-
 </body>
+
+{% endblock todo %}	
 </html>

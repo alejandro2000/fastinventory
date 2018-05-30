@@ -15,6 +15,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+   		<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet"> 
 		<link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
@@ -26,14 +28,101 @@
 
 
 </head>
-<body>
-	{% block menu %}
-		<header>
-			{% include "base/menu.html" %}
-		</header>
-	{% endblock menu %}
+<body data-spy="scroll" data-target="#fm-nav">
+	<style type="text/css">
+		#fm-nav a:hover{
+			background:rgba(255,255,255,.1);
+		}
+	</style>
+	<header style="position: fixed; width: 100%; z-index: 1000; top: 0; box-shadow:0px 4px 3px rgba(0,0,0,.3);">
+			<div class="row men" >
+				<div class="col">
+					<nav class="navbar navbar-toggleable-md navbar-inverse bg-primary" id="fm-nav">
+						  <a class="navbar-brand" href="{% url 'index_p' %}">
+						    <img src="{% static 'img/fastinventory.ico' %}" width="30" height="30" class="d-inline-block align-top" alt="FastInventory">
+						    FastInventory
+						  </a>
+
+					  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+					    <ul class="navbar-nav mr-auto">
+					      <li class="nav-item">
+					        <a class="nav-link" href="#"></a>
+					      </li>
+					      <li class="nav-item dropdown">
+					        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					          Publicaciones
+					        </a>
+					        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					          <a class="dropdown-item" href="{% url 'list_p' %}">Publicaciones</a>
+					          <hr>
+					          <a class="dropdown-item" href="{% url 'list_tecnologia' %}">Tecnologia</a>
+					          <a class="dropdown-item" href="{% url 'list_cine' %}">Cine</a>
+					          <a class="dropdown-item" href="{% url 'list_deportes' %}">Deportes</a>
+					          <a class="dropdown-item" href="{% url 'list_salud' %}">Salud</a>
+					          <a class="dropdown-item" href="{% url 'list_entrevista' %}">Entrevistas</a>
+					        </div>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="{% url 'productos' %}">Tienda</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#seccion1">quienes somos</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#seccion2">devs</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#seccion3">empresa</a>
+					      </li>
+					    </ul>
+					    <ul class="navbar-nav justify-content-center">
+					    	{% if request.user.is_authenticated %}
+					    		<li class="nav-item">
+									<a class="nav-link" href="#">
+									{% if user.user2.perfil.nombre_perfil == "vendedor" %}
+										vendedor
+									{% elif user.user2.perfil.nombre_perfil == "administrador" %}
+										administrador
+									{% elif user.user2.perfil.nombre_perfil == "cliente" %}
+										cliente
+									{% elif user.user2.perfil.nombre_perfil == "jefe" %}
+										jefe
+									{% endif %}
+									</a>
+								</li>
+					    		<li class="nav-item">
+									<a class="nav-link" href="#">{{ user.username }}</a>
+								</li>
+					    		<li class="nav-item dropdown">
+							        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							          Opciones
+							        </a>
+							        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							          <a class="dropdown-item" href="{% url 'perfilUsuario_u' user.username %}">Perfil</a>
+							          <a class="dropdown-item" href="{% url 'panel' %}">Panel de Admin.</a>
+							          <a class="dropdown-item" href="{% url 'ver_carrito' %}">Mi carrito</a>
+							        </div>
+							    </li>
+							    <li class="nav-item">
+									<a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+								</li>
+							{% else %}
+								<li class="nav-item">
+									<a class="nav-link" href="{% url 'ingresoUsuarios_u' %}">Iniciar Sesión</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{% url 'crearUsuario_u' %}">Registrarse</a>
+								</li>
+					    	{% endif %}
+						</ul>
+					  </div>
+					</nav>
+				</div>
+			</div>
+	</header>
 
 	<div class="row" style="width: 100%;padding:0;margin: 0;">
+
 		<div id="carouselExampleIndicators" class="carousel slide col-12" data-ride="carousel" style="padding: 0;margin: 0;">
 		  <ol class="carousel-indicators">
 		    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -71,7 +160,7 @@
 
 		<!-- bases de la empresa y video publicitario presentacion y metodología -->
 		<div class="col-12">
-			<div class="row" style="padding-bottom: 3%;padding-top: 4%;background-image: url('{% static 'img/cancha.jpg' %}');background-size: cover;background-attachment: fixed;">
+			<div class="row section" id="seccion1" style="padding-bottom: 3%;padding-top: 4%;background-image: url('{% static 'img/cancha.jpg' %}');background-size: cover;background-attachment: fixed;">
 				<div class="col-12 col-md-6 col-lg-4">
 					<div class="row justify-content-center align-items-center" style="height: 100%;">
 						<div class="col-auto">
@@ -108,7 +197,7 @@
 				<div class="col-12 col-md-6 col-lg-12">
 					<div class="row justify-content-center" style="height: 100%;margin-top: 40px;">
 						<div class="col-auto" style="padding: 0;">
-							<iframe height="300" width="500" src="https://www.youtube.com/embed/d_vDFOBz6LU?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>
+							<iframe height="300" width="500" src="https://www.youtube.com/embed/d_vDFOBz6LU?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allow="encrypted-media" allowfullscreen ></iframe>
 						</div>
 					</div>
 				</div>
@@ -124,7 +213,7 @@
 
 		<!-- Informacion de los desarrolladores -->
 		<div class="col-12">
-			<div class="row" style="padding-bottom: 10%;padding-top: 10%;background-image: url('{% static 'img/progress.jpg' %}');background-size: cover;background-attachment: fixed;">
+			<div class="row section" id="seccion2" style="padding-bottom: 18%;padding-top: 15%;background-image: url('{% static 'img/progress.jpg' %}');background-size: cover;background-attachment: fixed;">
 
 				<div class="col-12 col-md-6">
 					<div class="row justify-content-center align-items-center" style="height: 100%;">
@@ -168,7 +257,7 @@
 		<!-- Que hacemos y porque  -->
 
 		<div class="col-12">
-			<div class="row justify-content-end" style="padding-bottom: 10%;padding-top: 18%;background-image: url('{% static 'img/cambio.jpg' %}');background-size: cover;background-attachment: fixed;">
+			<div class="row section justify-content-end" id="seccion3" style="padding-bottom: 10%;padding-top: 18%;background-image: url('{% static 'img/cambio.jpg' %}');background-size: cover;background-attachment: fixed;">
 				<div class="col-4">
 					<div class="row justify-content-center">
 						<div class="col-auto">
@@ -186,9 +275,11 @@
 			</div>
 		</div>
 
+		{% include "base/footer.html" %}
+		
 	</div>
 	
-
+	
 
 
 	<script type="text/javascript" src="{% static 'js/particles.js' %}"></script>

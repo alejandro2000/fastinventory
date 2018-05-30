@@ -1,7 +1,9 @@
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
+from django.core.mail import EmailMessage
+
+from .forms import envio
 
 def politicas(request):
 	return render(request,'empresa/politicasDePrivacidad.html',{})
@@ -37,3 +39,15 @@ def logout(request):
 
 def panel(request):
 	return render(request,'empresa/panel.html',{})
+
+
+def enviarmsm(request):
+	if request.method == 'POST':
+		formulario = envio(request.POST)
+		if formulario.is_valid():
+			asunto = formulario.cleaned_data['asunto']
+			mensaje = formulario.cleaned_data['mensaje']
+			correo = formulario.cleaned_data['correo']
+			mail = EmailMessage(asunto,mensaje,correo,to=['inventoryfast@gmail.com'])
+			mail.send()
+			return redirect('index_p')

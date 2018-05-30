@@ -10,5 +10,8 @@ urlpatterns = [
     path('delete/<slug:slug>', login_required(views.producto_delete), name="delete"),
     path('agregar/', login_required(views.agregarAlCarrito), name="agregar_carrito"),
     path('carrito/', login_required(views.carrito), name="ver_carrito"),
+    path('eliminardelcarrito/<int:cod>', login_required(views.eliminardelCarrito), name="del_carrito"),
+    path('generarfactura', login_required(views.pagargenerarfactura), name="generar_factura"),
+    path('misfacturas/', login_required(views.vermisfacturas), name="misfacturas"),
 
 ]

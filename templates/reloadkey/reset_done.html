@@ -1,0 +1,12 @@
+{% extends "usuario/usuarioIngresar.html" %}
+{% load staticfiles %}
+
+
+{% block logeo %}
+	<div class="container">
+		<h3 style="color: white;" class="text-center">Hemos enviado un mensaje a su correo con un link para reestablecer su contraseña.</h3>
+		<p class="text-center"><a href="{% url 'ingresoUsuarios_u' %}" style="text-decoration: none;">Iniciar Sesión</a></p>
+	</div>
+{% endblock logeo %}
+	
+	

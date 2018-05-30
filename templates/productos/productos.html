@@ -1,42 +1,49 @@
-{% extends "base/base.html" %}
+{% extends "empresa/panel.html" %}
+{% load staticfiles %}
+{% load humanize %}
 
 {% block titulo %}
 	<title>Productos</title>
 {% endblock titulo %}
 
-{% block contenido %}
-	{% if messages %}
-	<ul class="messages">
-	    {% for message in messages %}
-	    <div class="alert alert-success alert-dismissible fade show" role="alert">
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		    <span aria-hidden="true">&times;</span>
-		  </button>
-		  <strong>{% if message.tags %}{% endif %}{{ message }}.</strong>
-		</div>
-	    <li</li>
-	    {% endfor %}
-	</ul>
-	{% endif %}
-	<div class="row">
-		{% if object_list %}
-			{% for obj in object_list %}
-				<div class="col-12 col-sm-6 col-md-4 card">
-					<div class="card-block">
-						<img class="card-img-top" src="{{ obj.imagen1.url }}" width="150" alt="Card image cap">
-					</div>
-					<div class="card-block">
-						<p class="card-text"><a href="{% url 'detalle_prod' obj.slug %}">{{ obj.titulo }}</a></p>
-						<p>${{ obj.precio }}</p>
-						<hr>
-						<p>
-							 <b>{{ obj.contenido|truncatechars:50 }}</b>
-						</p>
-					</div>
+
+{% block contenidocentral %}
+	<div class="col-12">
+		<div class="container">
+			
+		<div class="row" style="padding-left: 10%;">
+			{% if messages %}
+				<div class="col-12">				
+					<ul class="messages">
+					    {% for message in messages %}
+					    <div class="alert alert-success alert-dismissible fade show" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						    <span aria-hidden="true">&times;</span>
+						  </button>
+						  <strong>{% if message.tags %}{% endif %}{{ message }}.</strong>
+						</div>
+					    <li</li>
+					    {% endfor %}
+					</ul>
 				</div>
-			{% endfor %}
-		{% else %}
-			<h2>No hay productos disponibles</h2>
-		{% endif %}
+			{% endif %}
+
+			{% if object_list %}
+				{% for obj in object_list %}
+					<div class="col-12 col-sm-6 col-md-3 card tarjeta" style="width: 20rem; margin-right: 1%;margin-bottom: 1%;">
+					  <a href="{% url 'detalle_prod' obj.slug %}"><img class="card-img-top img-fluid" src="{{ obj.imagen1.url }}" alt="{{ obj.titulo }}" title="{{ obj.titulo }}"></a>
+					  <div class="card-block">
+					    <h4 class="card-title">{{ obj.titulo }}</h4>
+					    <p class="card-text">{{ obj.contenido|truncatechars:50 }}</p>
+					    <a class="btn btn-primary" style="color:white;">$ {{ obj.precio|intcomma }}</a>
+					  </div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<h2>No hay productos disponibles</h2>
+			{% endif %}
+		</div>
+		</div>
 	</div>
-{% endblock %}
+	
+{% endblock contenidocentral %}

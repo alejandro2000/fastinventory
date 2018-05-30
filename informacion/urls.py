@@ -9,5 +9,6 @@ urlpatterns = [
     path('Nosotros/', login_required(views.quienesSomos), name='quienesSomos_p'),
     path('panel/', login_required(views.panel), name='panel'),
     path('', login_required(views.index), name='index_p'),
+    path('envmensaje/',login_required(views.enviarmsm), name='envmsm')
 
 ]

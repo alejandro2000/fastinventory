@@ -48,7 +48,12 @@ INSTALLED_APPS = [
     'posts',
     'usuario',
     'informacion',
-    'productos'
+    'productos',
+
+    #para representar dinero
+
+    'django.contrib.humanize',
+
 ]
 
 
@@ -86,8 +91,8 @@ WSGI_APPLICATION = 'blogPersonal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-
-"""DATABASES = {
+"""
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -163,3 +168,10 @@ LOGOUT_REDIRECT_URL = reverse_lazy('index_p')
 
 # ckeditor
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'inventoryfast@gmail.com'
+EMAIL_HOST_PASSWORD = 'cuentafastinventory'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

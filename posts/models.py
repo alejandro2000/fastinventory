@@ -34,7 +34,7 @@ class Post(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 	actualizado = models.DateTimeField(auto_now_add=False, auto_now=True)
 	categoria = models.ForeignKey(categorias, on_delete=models.CASCADE, null=True)
-	user = models.ForeignKey(user2, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.titulo
@@ -58,5 +58,8 @@ def pre_save_post_receiver(sender , instance, *args, **kwargs):
 
 pre_save.connect(pre_save_post_receiver, sender=Post)
 
+class publicacionesGustadas(models.Model):
+	id_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	id_user2 = models.ForeignKey(user2, on_delete=models.CASCADE)
 
 

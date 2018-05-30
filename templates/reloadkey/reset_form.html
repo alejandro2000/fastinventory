@@ -1,0 +1,10 @@
+{% extends 'usuario/usuarioIngresar.html' %}
+{% load staticfiles %}
+
+{% block logeo %}
+	<form class="login" method="post">
+		{% csrf_token %}
+		<label for="id_email">Correo:</label>{{ form.email }}
+		<input class="btn btn-primary" type="submit" value="Enviar">
+	</form>
+{% endblock logeo %}

@@ -17,10 +17,11 @@ class registrarUsuario(CreateView):
 	model = User 
 	template_name = "usuario/usuarioCrear.html"
 	form_class = registroForm
-	success_url = reverse_lazy('list_p')
+	success_url = reverse_lazy('ingresoUsuarios_u')
 
 def listarUsuarios(request):
-	paraimagen = user2.objects.all()
+	ident = request.user.id
+	paraimagen = user2.objects.exclude(user=ident)
 
 	filtro = request.GET.get('q')
 
@@ -122,3 +123,5 @@ def despedir(request , idusu):
 	persona.perfil = perfila
 	persona.save()
 	return redirect('consultarEmpleados')
+
+
