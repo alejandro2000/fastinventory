@@ -1,0 +1,96 @@
+{% extends "empresa/panel.html" %}
+{% load staticfiles %}
+
+{% block titulo %}
+	<title>Usuarios</title>
+{% endblock titulo %}
+
+{% block contenidocentral %}
+
+	<div class="row justify-content-start" style="margin-bottom: 10px;">
+		<div class="col-12">
+			<form class="form-inline my-2 my-lg-0" method="GET" action="">
+		      <input class="form-control mr-sm-2" type="text" placeholder="Buscar" name="q" value="{{ request.GET.q }}">
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+		      <button class="btn btn-success" style="padding-left: 1%;margin-left: 1%;"><i class="fas fa-user-plus"></i> Crear nuevo usuario</button>
+		    </form>
+		</div>
+		<div class="col-12">
+			<div class="row">
+				<table class="table table-hover">
+				  <thead>
+				    <tr>
+				      <th>Código</th>
+				      <th>Usuario</th>
+				      <th>Correo</th>
+				      <th>Perfil</th>
+				      <th>Nombre</th>
+				      <th>imagen</th>
+				      <th>Eliminar</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  	{% for obj in contacts %}
+				  		<tr>
+					      <th scope="row">{{ obj.id }}</th>
+					      <td>{{ obj.username }}</td>
+					      <td>{{ obj.email }}</td>
+					      <td>{{ obj.user2.perfil.nombre_perfil }}</td>
+					      <td>{{ obj.first_name }}</td>
+					      <td>
+					      	<img class="img-fluid" src="{{ obj.user2.imagen.url }}" width="15%;"></img>
+					      </td>
+					      <td><a class="badge badge-danger" href="#" role="button" data-toggle="modal" data-target="#mensajesModal">Eliminar</a></td>
+					    </tr>
+					    <!-- Alerta de eliminar usuario 
+						<div class="modal fade" id="mensajesModal" tabindex="-1" role="dialog" aria-labelledby="mensajesModal" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="exampleModalLabel">Esta seguro que desea eliminar el usuario {{ obj.username }}</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						      	<div class="container-fluid">
+							        <a class="btn btn-danger" href="">Eliminar</a>
+						        </div>
+						      </div>
+						    </div>
+						  </div>
+						</div>-->
+				  	{% endfor %}
+				  </tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="row justify-content-center">
+				<div class="col-auto pagination">
+				    <span class="step-links">
+				        {% if contacts.has_previous %}
+				            <a class="btn btn-outline-primary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; Primero</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a>
+				        {% endif %}
+
+				        <span class="current lead">
+				            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}
+				        </span>
+
+				        {% if contacts.has_next %}
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ultimo &raquo;</a>
+				        {% endif %}
+				    </span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+	
+
+	
+{% endblock contenidocentral %}

@@ -1,0 +1,125 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+<!-- Include the above in your HEAD tag -->
+
+	{% block titulo %}
+		<title>Panel de Administración</title>
+	{% endblock titulo %}
+
+	{% block personalizado %}
+		<link rel="stylesheet" type="text/css" href="{% static 'css/panel.css' %}">
+		<script type="text/javascript" src="{% static 'css/panel.css' %}"></script>
+	{% endblock personalizado %}
+
+{% block todo %}
+<body>
+	<div class="row fit" style="height: 659px;">
+
+		<!--Menu izquierdo-->
+		<div class="col-2 fit"style="height: 100%;background-color: blue;">
+			<div class="nav-side-menu">
+			    <div class="brand">{{ user.username }}</div>
+			    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+			  
+			        <div class="menu-list">
+			  
+			            <ul id="menu-content" class="menu-content collapse out">
+			                <li>
+			                  <a href="{% url 'misacciones' %}">
+			                  <i class="fa fa-dashboard fa-lg"></i> Plataforma
+			                  </a>
+			                </li>
+
+			                <li>
+			                  <a href="{% url 'todaslasfacturas' %}">
+			                  <i class="far fa-newspaper fa-lg"></i> Facturas
+			                  </a>
+			                </li>
+
+
+			                <!--<li data-toggle="collapse" data-target="#service" class="collapsed">
+			                  <a href="#"><i class="fa fa-globe fa-lg"></i> Publicaciones </span></a>
+			                </li>  
+			                <ul class="sub-menu collapse" id="service">
+			                  <li>New Service 1</li>
+			                  <li>New Service 2</li>
+			                  <li>New Service 3</li>
+			                </ul>-->
+
+			                <li>
+			                  <a href="{% url 'productos' %}">
+			                  	<i class="fas fa-prescription-bottle fa-lg"></i> Productos
+			                  </a>
+			                </li>
+
+			                <li>
+			                  <a href="{% url 'list_u' %}">
+			                  	<i class="fa fa-users fa-lg"></i> Usuarios
+			                  </a>
+			                </li>
+
+			                <li>
+			                  <a href="{% url 'perfilUsuario_u' user.username %}">
+			                  	<i class="fa fa-user fa-lg"></i> Perfil
+			                  </a>
+			                </li>
+
+			                <li>
+			                  <a href="{% url 'logout' %}">
+			                  	<i class="fas fa-power-off"></i> Cerrar Sesion
+			                  </a>
+			                </li>
+			            </ul>
+			     </div>
+			</div>
+		</div>
+
+		<!--Contenido de la parte derecha-->
+		<div class="col-10 fit"style="height: 100%;">
+			<div class="row fit" style="height: 100%;">
+
+				<!-- espacio para el menu de la parte superior-->
+				<div class="col-12 fit"style="height: 9%;position: fixed;z-index: 1000">
+					<nav class="navbar navbar-light"style="background-color: #23282e;padding-bottom: 0;">
+					  	<nav class="navbar navbar-light"style="background-color: #23282e;">
+							<a class="navbar-brand" href="{% url 'index_p' %}">
+						    	<img src="{% static 'img/fastinventory.png' %}" width="30" height="30" alt="">
+						    	<p style="padding-left: 2%;display: inline;color: white;"> Ir a Inicio</p>
+						  	</a>
+						</nav>
+
+
+					  <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					    <ul class="navbar-nav mr-auto">
+					      <li class="nav-item active">
+					        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#">Link</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link disabled" href="#">Disabled</a>
+					      </li>
+					    </ul>
+					    <form class="form-inline my-2 my-lg-0">
+					      <input class="form-control mr-sm-2" type="text" placeholder="Search">
+					      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					    </form>
+					  </div>-->
+
+					</nav>
+				</div>
+
+				<!-- espacio para el contenio que tiene que ver con toda la interación del usuario -->
+				<div class="col-12 fit"style="height: 91%;">
+					<div class="row fit"style="padding: 4%; height: 100%;padding-top: 10%;">						
+						{% block contenidocentral %}
+							
+						{% endblock contenidocentral %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+{% endblock todo %}

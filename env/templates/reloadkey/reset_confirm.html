@@ -1,0 +1,31 @@
+{% extends 'usuario/usuarioIngresar.html' %}
+{% load staticfiles %}
+
+{% block logeo %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="wrap">
+                <p class="form-title">
+                    Restauración</p>
+                {% if validlink%}
+	                <form class="login" method="post">
+	                	{% csrf_token %}
+
+	                	{{ form.new_password1.errors }}
+	                	<label for="id_new_password1">Nueva Contraseña:</label>
+	                	{{ form.new_password1 }}
+
+	                	{{ form.new_password2.errors }}
+	                	<label for="id_new_password2">Repita Contraseña:</label>
+		                {{ form.new_password2 }}
+
+		                <input type="submit" value="confirmar" class="btn btn-success btn-sm" />
+	                </form>
+                {% else %}
+					<h1 class="text-center">Enlace inválido: este enlace ya ha sido utilizado</h1>
+					<p class="text-center"><a href="{% url 'ingresoUsuarios_u' %}" style="text-decoration: none;">Iniciar Sesión</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock logeo %}

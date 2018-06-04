@@ -1,0 +1,42 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+
+	<footer id="contact" style="margin: 0;width: 100%;padding-top: 5%;z-index: 10000;height: 610px;">
+			<div class="section-content">
+				<h1 class="section-header">Deseas <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Contactarnos</span></h1>
+				<h3>Envianos un mensaje, si tienes alguna inquietud</h3>
+			</div>
+			<div class="contact-section">
+			<div class="container">
+				<form class="row" method="post" action="{% url 'envmsm' %}">
+					{% csrf_token %}
+					<div class="col-md-6 form-line">
+			  			<div class="form-group">
+			  				<label for="exampleInputUsername">Nombre</label>
+					    	<input type="text" class="form-control" id="" placeholder="Ingresa el nombre" name="nombre">
+				  		</div>
+				  		<div class="form-group">
+					    	<label for="exampleInputEmail">Dirección de Correo</label>
+					    	<input type="email" class="form-control" id="exampleInputEmail" placeholder="Ingresa el correo" name="correo" required>
+					  	</div>	
+					  	<div class="form-group">
+					    	<label for="asunto">Asunto</label>
+					    	<input type="tel" class="form-control" id="asunto" placeholder="El asunto" name="asunto">
+			  			</div>
+			  		</div>
+			  		<div class="col-md-6">
+			  			<div class="form-group">
+			  				<label for ="description">Mensaje</label>
+			  			 	<textarea  class="form-control" id="description" placeholder="¿Cuál es su mensaje?" name="mensaje" required></textarea>
+			  			</div>
+			  			<div>
+			  				<button type="submit" class="btn btn-primary submit">
+			  					<i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar
+			  				</button>
+			  			</div>
+			  			
+					</div>
+				</form>
+			</div>
+	</footer>

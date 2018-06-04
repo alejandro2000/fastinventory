@@ -1,0 +1,92 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block personalizado %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detalleproducto.css' %}">
+{% endblock personalizado %}
+
+{% block titulo %}
+	<title>Producto</title>
+{% endblock titulo %}
+
+{% block contenidomain %}
+  <div class="col-12">
+    <div class="container">
+      
+    <div class="row">
+      {% if messages %}
+        <div class="col-12">        
+          <ul class="messages">
+              {% for message in messages %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>{% if message.tags %}{% endif %}{{ message }}.</strong>
+            </div>
+              <li</li>
+              {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if instance %}
+        <div class="container">
+          <div class="card"> 
+            <div class="container-fliud">
+              <div class="wrapper row">
+                <div class="preview col-md-6">
+                  
+                  <div class="preview-pic tab-content">
+                    <div class="tab-pane active" id="pic-1"><img src="{{ instance.imagen1.url }}" /></div>
+                    <div class="tab-pane" id="pic-2"><img src="{{ instance.imagen2.url }}" /></div>
+                    <div class="tab-pane" id="pic-3"><img src="{{ instance.imagen3.url }}" /></div>
+                    <div class="tab-pane" id="pic-4"><img src="{{ instance.imagen4.url }}" /></div>
+                  </div>
+                  <ul class="preview-thumbnail nav nav-tabs">
+                    <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src="{{ instance.imagen1.url }}" /></a></li>
+                    <li><a data-target="#pic-2" data-toggle="tab"><img src="{{ instance.imagen2.url }}" /></a></li>
+                    <li><a data-target="#pic-3" data-toggle="tab"><img src="{{ instance.imagen3.url }}" /></a></li>
+                    <li><a data-target="#pic-4" data-toggle="tab"><img src="{{ instance.imagen4.url }}" /></a></li>
+                  </ul>
+                  
+                </div>
+                <div class="details col-md-6">
+                  <h3 class="product-title">{{ instance.titulo }}</h3>
+                  <p class="product-description">{{ instance.contenido }}</p>
+                  <h4 class="price">Precio Actual: <span>$ {{ instance.precio|intcomma }}</span></h4>
+                  <p class="vote"><strong>Se el primero</strong> de tu circulo social en comprar este <strong>Producto</strong></p>
+                  <h5 class="sizes">Referencia:
+                    <span class="size" data-toggle="tooltip" title="small">{{ instance.id }}</span>
+                  </h5>
+                  <form method="post" action="{% url 'agregar_carrito' %}">
+                    {% csrf_token %}
+                    <h5 class="colors">Cantidad:</h5>
+                    <input type="number" name="cod" value="{{ instance.id }}" hidden>
+                    <div class="row" style="padding-bottom: 2%;">
+                      <div class="col-3">
+                        <select class="form-control auto" name="cantidad">
+                          {% for num in stock %}
+                            <option>{{ num }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="action">
+                      <button class="add-to-cart btn btn-default" type="submit">Añadir al carrito</button>
+                      <a class="like btn btn-default" href="{% url 'productos' %}"><i class="fas fa-chevron-circle-left"></i> Volver</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <h2>No Existe el producto referenciado</h2>
+      {% endif %}
+    </div>
+    </div>
+  </div>
+  
+{% endblock contenidomain %}

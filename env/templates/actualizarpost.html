@@ -1,0 +1,51 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% block titulo %}
+	<title>Actualizar Post</title>
+{% endblock titulo %}
+
+{% block personalizado %}
+	<script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+{% endblock personalizado %}
+
+{% block contenido %}
+		<form method="POST" action="{% url 'actualizarPost' form.slug %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="form-group">
+			    <label for="Titulo">Titulo</label>
+			    <input value="{{ form.titulo }}" type="text" class="form-control" id="Titulo" placeholder="Titulo" name="titulo" required>
+			</div>
+			<div class="form-group">
+				<label for="Contenido">Contenido del la Publicación</label>
+				<textarea class="form-control" id="Contenido" rows="5" name="contenido">{{ form.contenido }}</textarea>
+				<script type="text/javascript">
+					CKEDITOR.replace( 'contenido' );
+				</script>
+			</div>
+			<div class="form-group">
+				<label for="Imagen">Imagen del Post</label>
+				{% if form.imagen %}
+					<center><img class="card-img-top generic img-responsive" src="{{ form.imagen.url }}" alt="Imagen del Post" height="100" width="100"></center>
+					<small id="fileHelp" class="form-text text-muted">Cargue Una Imagen de la mejor calidad posible para el post.</small>
+				{% else %}
+					<center><img class="card-img-top generic img-responsive" src="{% static 'img/metal.png' %}" alt="Imagen del Post predeterminada" height="100" width="100"></center>
+					<small id="fileHelp" class="form-text text-muted">Cargue Una Imagen de la mejor calidad posible para el post.</small>
+				{% endif %}
+			    <input type="file" class="form-control-file" id="Imagen" placeholder="Suba una imagen para el perfil" name="imagen" required>
+			</div>
+			<div class="form-group">
+			    <label for="Categoria">Categoria</label>
+			    <select class="form-control" id="Categoria" name="categoria">
+			    	<option value="6">general</option>
+			    	{% for c in cat %}
+			    		<option value="{{ c.id }}">{{ c.nombre_categoria }}</option>
+			    	{% endfor %}
+			    </select>
+			</div>
+			<div class="form-group">
+			    <input type="text" value="{{ user.id }}" name="user" hidden>
+			</div>
+			<a class="btn btn-primary" href="{% url 'list_p' %}" role="button">Volver a publicaciones</a>
+			<button class="btn btn-primary" type="submit">Actualizar</button>
+		</form>
+{% endblock contenido %}

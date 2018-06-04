@@ -1,0 +1,124 @@
+
+{% extends "base/base.html"%}
+{% load staticfiles %}
+
+{% block titulo %}
+	<title>Publicaciones</title>
+{% endblock titulo %}
+
+
+{% block contenido %}
+		{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+		{% endfor %}
+		{% endif %}
+
+		<div class="contenedor" style="margin-left: 1%;">
+
+			<div class="row justify-content-start" style="margin-bottom: 20px;">
+				<div class="col-auto">
+					<form class="form-inline my-2 my-lg-0" method="GET" action="">
+				      <input class="form-control mr-sm-2" type="text" placeholder="Buscar" name="q" value="{{ request.GET.q}}">
+				      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+				    </form>
+				</div>
+			</div>
+
+
+					{% for obj in contacts %}
+
+		<div class="row border">
+
+			<div class="col-md-4 car-image-block">
+				<a href="#"><img id="imagenn" src="{{ obj.imagen.url }}"></a>
+			</div>
+			<div class="col-md-8 card-body ">
+			<h3>{{ obj.titulo }}</h3>
+
+			<h5><small><i><strong>Autor: </strong> {{ obj.user }}</i></small></h5>
+			<small class="text-muted"><i><strong>Categoria: </strong> {{ obj.categoria }}</i></small>
+			<ul class="list-inline">
+				<li class="list-inline-item">{{ obj.contenido|safe|truncatechars:100 }}</li>
+			</ul>
+			<a class="btn btn-info" href="{% url 'detail_p' obj.slug %}">Continuar leyendo</a>
+			</div>
+
+		</div>
+		<br>
+			 <style media="screen">
+				 #imagenn {width:100%;}
+				.car-image-block {padding:0px;margin:0px;}
+				.car-image-block img {min-height: 200px; overflow: hidden;}
+
+			</style>
+
+					<!--<div class="card" >
+							<table class="" align="center" width="*%" >
+							<tr><td style="padding: 0px;">
+							<img src="{{ obj.imagen.url }}" style="width: 15rem;" alt="" ></td>
+							<td style="padding-left: 5%;"><div class="card-block">
+						    <h4 class="card-title">{{ obj.titulo }}</h4>
+						  </div>{{ obj.contenido|safe|truncatechars:150 }} </td>
+							</tr></table>
+							<div class="card-footer">
+								<a id="boton" href="{% url 'detail_p' obj.slug %}" class="btn btn-primary" style="width: 100%;">Continuar leyendo</a>
+								<p class="card-text"><small><i><strong>Autor: </strong> {{ obj.user }}</i></small></p>
+								<small class="text-muted"><i><strong>Categoria: </strong> {{ obj.categoria }}</i></small>
+							</div>
+						</div>
+<style media="screen">
+	#boton{
+		width: 50px;
+	}
+</style>
+						<br>-->
+					{% endfor %}
+
+<!--
+					<div class="card">
+	    				  <div class="row justify-content-center align-items-center" style="height: 100%;">
+							<div class="col-4"><img class="img-fluid" src="{% static 'img/post.png' %}"></img></div>
+	    				  </div>
+    				</div>
+				</div>
+			</div>-->
+
+			<div class="row justify-content-center">
+				<div class="col-auto pagination">
+				    <span class="step-links">
+				        {% if contacts.has_previous %}
+				            <a class="btn btn-outline-primary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; Primero</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a>
+				        {% endif %}
+
+				        <span class="current lead">
+				            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}
+				        </span>
+
+				        {% if contacts.has_next %}
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ultimo &raquo;</a>
+				        {% endif %}
+				    </span>
+				</div>
+			</div>
+		</div>
+
+
+
+{% endblock contenido %}
+
+{% block aside %}
+	<p style="font-family: 'Lobster', cursive;font-size: 40px;">últimas publicaciones</p>
+	{% if fresc %}
+		{% for obj in fresc %}
+			<a class="badge badge-success" href="{% url 'detail_p' obj.slug %}" title="{{ obj.titulo }}">{{ obj.titulo|truncatechars:30 }}</a>
+		{% endfor %}
+	{% else %}
+		<p>No hay publicaciones recientes</p>
+	{% endif %}
+	
+	
+						
+{% endblock aside %}

@@ -1,0 +1,326 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="shortcut icon" href="{% static 'img/fastinventory.ico' %}" />
+	{% block titulo %}
+		<title>Titulo Base</title>
+	{% endblock titulo %}
+	
+	{% block bootstrap %}
+		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+   		<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
+	{% endblock bootstrap %}
+
+	{% block personalizado %}
+		<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+	{% endblock personalizado %}
+
+
+</head>
+<body data-spy="scroll" data-target="#fm-nav">
+	<style type="text/css">
+		#fm-nav a:hover{
+			background:rgba(255,255,255,.1);
+		}
+	</style>
+	<header style="position: fixed; width: 100%; z-index: 1000; top: 0; box-shadow:0px 4px 3px rgba(0,0,0,.3);">
+			<div class="row men" >
+				<div class="col">
+					<nav class="navbar navbar-toggleable-md navbar-inverse bg-primary" id="fm-nav">
+						  <a class="navbar-brand" href="{% url 'index_p' %}">
+						    <img src="{% static 'img/fastinventory.ico' %}" width="30" height="30" class="d-inline-block align-top" alt="FastInventory">
+						    FastInventory
+						  </a>
+
+					  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+					    <ul class="navbar-nav mr-auto">
+					      <li class="nav-item">
+					        <a class="nav-link" href="#"></a>
+					      </li>
+					      <li class="nav-item dropdown">
+					        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					          Publicaciones
+					        </a>
+					        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					          <a class="dropdown-item" href="{% url 'list_p' %}">Publicaciones</a>
+					          <hr>
+					          <a class="dropdown-item" href="{% url 'list_tecnologia' %}">Tecnologia</a>
+					          <a class="dropdown-item" href="{% url 'list_cine' %}">Cine</a>
+					          <a class="dropdown-item" href="{% url 'list_deportes' %}">Deportes</a>
+					          <a class="dropdown-item" href="{% url 'list_salud' %}">Salud</a>
+					          <a class="dropdown-item" href="{% url 'list_entrevista' %}">Entrevistas</a>
+					        </div>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="{% url 'productos' %}">Tienda</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#seccion1">quienes somos</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#seccion2">devs</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#seccion3">empresa</a>
+					      </li>
+					    </ul>
+					    <ul class="navbar-nav justify-content-center">
+					    	{% if request.user.is_authenticated %}
+					    		<li class="nav-item">
+									<a class="nav-link" href="#">
+									{% if user.user2.perfil.nombre_perfil == "vendedor" %}
+										vendedor
+									{% elif user.user2.perfil.nombre_perfil == "administrador" %}
+										administrador
+									{% elif user.user2.perfil.nombre_perfil == "cliente" %}
+										cliente
+									{% elif user.user2.perfil.nombre_perfil == "jefe" %}
+										jefe
+									{% endif %}
+									</a>
+								</li>
+					    		<li class="nav-item">
+									<a class="nav-link" href="{% url 'ver_carrito' %}">
+										<i class="fas fa-shopping-bag"></i>
+									</a>
+								</li>
+					    		<li class="nav-item dropdown">
+							        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							          Opciones
+							        </a>
+							        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							          <a class="dropdown-item" href="{% url 'perfilUsuario_u' user.username %}">Perfil</a>
+							          <a class="dropdown-item" href="{% url 'misacciones' %}">Panel de Admin.</a>
+							          <a class="dropdown-item" href="{% url 'ver_carrito' %}">Mi carrito</a>
+							        </div>
+							    </li>
+							    <li class="nav-item">
+									<a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+								</li>
+							{% else %}
+								<li class="nav-item">
+									<a class="nav-link" href="{% url 'ingresoUsuarios_u' %}">Iniciar Sesión</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{% url 'crearUsuario_u' %}">Registrarse</a>
+								</li>
+					    	{% endif %}
+						</ul>
+					  </div>
+					</nav>
+				</div>
+			</div>
+	</header>
+
+	<div class="row" style="width: 100%;padding:0;margin: 0;">
+
+		<span class="ir-arriba"><i class="fas fa-arrow-up"></i></span>
+
+		<div id="carouselExampleIndicators" class="carousel slide col-12" data-ride="carousel" style="padding: 0;margin: 0;">
+		  <ol class="carousel-indicators">
+		    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+		    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+		    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+		    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+		  </ol>
+		  <div class="carousel-inner" role="listbox">
+		  	<div class="carousel-item active">
+			  <img src="{% static 'img/imagen1.jpg' %}" alt="imagen1.jpg" title="imagenes empresariales">
+			  <div class="carousel-caption d-none d-md-block" style="margin-bottom: 2%;;">
+			    <h3 class="banner">FAST INVENTORY</h3>
+			    <p class="bannersub">Un mundo en donde todos los sueños se convierten en realidad.</p>
+			  </div>
+			</div>
+		    <div class="carousel-item">
+		      <img class="d-block img-fluid" src="{% static 'img/imagen2.jpg' %}" alt="imagen2" title="imagenes empresariales">
+		    </div>
+		    <div class="carousel-item">
+		      <img class="d-block img-fluid" src="{% static 'img/imagen3.jpg' %}" alt="imagen3" title="imagenes empresariales">
+		    </div>
+		    <div class="carousel-item">
+		      <img class="d-block img-fluid" src="{% static 'img/imagen4.jpg' %}" alt="imagen4" title="imagenes empresariales">
+		    </div>
+		  </div>
+		  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		    <span class="sr-only">Anterior</span>
+		  </a>
+		  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		    <span class="sr-only">Siguiente</span>
+		  </a>
+		</div>
+
+		<!-- bases de la empresa y video publicitario presentacion y metodología -->
+		<div class="col-12">
+			<div class="row section" id="seccion1" style="padding-bottom: 4%;padding-top: 5%;background-image: url('{% static 'img/cancha.jpg' %}');background-size: cover;background-attachment: fixed;">
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="row justify-content-center align-items-center" style="height: 100%;">
+						<div class="col-auto">
+							<img class="img-fluid" src="{% static 'img/market.png' %}">
+						</div>
+						<div class="col-12">
+							<h4 class="text-center" style="color: white">Portabilidad</h4>
+							<p class="text-center" style="color: white">Nos encontramos tambien en plataformas android, para que compres en cualquier momento y lugar</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="row justify-content-center align-items-center" style="height: 100%;">
+						<div class="col-auto">
+							<img class="img-fluid" src="{% static 'img/tienda1.png' %}">
+						</div>
+						<div class="col-12">
+							<h4 class="text-center" style="color: white">Servicio</h4>
+							<p class="text-center" style="color: white">Contamos con los empleados más calificados para hacer de usted una persona más feliz después de conocernos - Amamos la calidad humana</p>
+						</div>
+					</div>				
+				</div>
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="row justify-content-center align-items-center" style="height: 100%;">
+						<div class="col-auto">
+							<img class="img-fluid" src="{% static 'img/codigo_barras.png' %}">
+						</div>
+						<div class="col-12">
+							<h4 class="text-center" style="color: white">Agilismo</h4>
+							<p class="text-center" style="color: white">Nuestros procesos de venta son los más agiles, contamos con servicios personalizados de venta local ahorrandote muchisimo tiempo</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-6 col-lg-12">
+					<div class="row justify-content-center" style="height: 100%;margin-top: 40px;">
+						<div class="col-auto" style="padding: 0;">
+							<iframe height="300" width="500" src="https://www.youtube.com/embed/d_vDFOBz6LU?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allow="encrypted-media" allowfullscreen ></iframe>
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="row justify-content-center">
+						<div class="col-auto">
+							<a href="{% url 'quienesSomos_p' %}" style="color: white;">¿Quieres saber más de nosotros? Conocenos - FASTINVENTORY</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Informacion de los desarrolladores -->
+		<div class="col-12">
+			<div class="row section" id="seccion2" style="padding-bottom: 20%;padding-top: 19%;background-image: url('{% static 'img/progress.jpg' %}');background-size: cover;background-attachment: fixed;">
+
+				<div class="col-12 col-md-6">
+					<div class="row justify-content-center align-items-center" style="height: 100%;">
+						<div class="col-auto">
+							<img class="img-fluid" src="{% static 'img/creador1.png' %}">
+						</div>
+						<div class="col-12">
+							<div class="row justify-content-center">
+								<div class="col-12">
+									<h4 class="text-center" style="color: white">Cristian David Lemus</h4>
+								</div>
+								<div class="col-1"><a href="https://www.instagram.com/cdavid_lemus/" target="blank"><i style="font-size: 40px; color: #cd486b" class="fab fa-instagram"></i></a></div>
+								<div class="col-1"><a href="https://www.facebook.com/cristian.lemusc" target="blank"><i style="font-size: 40px; color: #3b5998" class="fab fa-facebook-square"></i></a></div>
+								<div class="col-1"><a href="https://www.instagram.com/cdavid_lemus/" target="blank"><i style="font-size: 40px; color: #d34836" class="fab fa-google-plus-g"></i></a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12 col-md-6">
+					<div class="row justify-content-center align-items-center" style="height: 100%;">
+						<div class="col-auto">
+							<img class="img-fluid" src="{% static 'img/creador2.png' %}">
+						</div>
+						<div class="col-12">
+							<div class="row justify-content-center">
+								<div class="col-12">
+									<h4 class="text-center" style="color: white">Alejandro Taborda Cadavid</h4>
+								</div>
+								<div class="col-1"><a href="https://www.instagram.com/ataborda87/" target="blank"><i style="font-size: 40px; color: #cd486b" class="fab fa-instagram"></i></a></div>
+								<div class="col-1"><a href="https://www.facebook.com/alejandro.taborda.752" target="blank"><i style="font-size: 40px; color: #3b5998" class="fab fa-facebook-square"></i></a></div>
+								<div class="col-1"><a href="https://www.instagram.com/ataborda87/" target="blank"><i style="font-size: 40px; color: #d34836" class="fab fa-google-plus-g"></i></a></div>
+							</div>
+						</div>
+					</div>				
+				</div>
+
+			</div>
+		</div>
+
+		<!-- redes sociales de fastinventory  -->
+
+		<div class="social">
+			<ul>
+				<li>
+					<a href="https://www.facebook.com/fast.inventory.77" target="_blank" class="icon-facebook">
+						<i class="fab fa-facebook-square"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://twitter.com/FastInventory" target="_blank" class="icon-twitter">
+						<i class="fab fa-twitter-square"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://plus.google.com/101409059044094071813" target="_blank" class="icon-googleplus">
+						<i class="fab fa-google-plus-square"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://co.pinterest.com/fastinventory/" target="_blank" class="icon-pinterest">
+						<i class="fab fa-pinterest-square"></i>
+					</a>
+				</li>
+				<li>
+					<a href="mailto:inventoryfast@gmail.com" class="icon-mail">
+						<i class="fas fa-envelope-square"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+
+		<!-- Que hacemos y porque  -->
+
+		<div class="col-12">
+			<div class="row section justify-content-end" id="seccion3" style="padding-bottom: 10%;padding-top: 25%;background-image: url('{% static 'img/cambio.jpg' %}');background-size: cover;background-attachment: fixed;">
+				<div class="col-4">
+					<div class="row justify-content-center">
+						<div class="col-auto">
+							<img class="img-fluid" src="{% static 'img/quality.png' %}">
+						</div>
+						<div class="col-12">
+							<h4 class="text-center" style="color: white;">Calidad</h4>
+							<p class="text-center" style="color: white;">Porque creemos en ti y en nuestros trabajadores, siempre desarrollamos las mejores estrategias para que este a gusto y ahorre tiempo</p>
+						</div>
+						<div class="col-auto">
+							<a href="{% url 'politicas_p' %}" style="text-decoration: none;">Políticas de Privacidad</a>
+						</div>
+					</div>
+				</div>		
+			</div>
+		</div>
+
+		{% include "base/footer.html" %}
+		
+	</div>
+	
+	
+
+
+	<script type="text/javascript" src="{% static 'js/particles.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/particulas.js' %}"></script>
+</body>
+</html>

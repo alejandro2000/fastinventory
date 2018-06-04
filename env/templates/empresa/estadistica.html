@@ -1,0 +1,62 @@
+{% extends 'empresa/panel.html' %}
+{% load staticfiles %}
+
+{% block personalizado %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/panel.css' %}">
+	<script type="text/javascript" src="{% static 'css/panel.css' %}"></script>
+
+	 <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="{% static 'js/graficosApiDeGoogle.js' %}"></script>
+
+
+{% endblock personalizado %}
+
+{% block contenidocentral %}
+	<div class="col-12">
+		<div class="row justify-content-center">
+			<div class="col-3" style="background-color: #2980B9;border-radius: 10px 0px 0px 10px;padding-top: 2%;">
+				<h6 class="text-center" style="color: white;font-weight: 700;">Empleados</h6>
+				<p class="text-center" style="color: white;font-size:2em;">{{ empleados }}</p>
+				<p class="text-center"><i class="fas fa-male" style="font-size:3em; color:white"></i></p>
+			</div>
+			<div class="col-3" style="background-color: #E74C3C;padding-top: 2%;">
+				<h6 class="text-center" style="color: white;font-weight: 700;">Usuarios</h6>
+				<p class="text-center" style="color: white;font-size:2em;">{{ usuarios }}</p>
+				<p class="text-center"><i class="fas fa-user" style="font-size:3em; color:white"></i></p>
+			</div>
+			<div class="col-3" style="background-color: #F39C12;padding-top: 2%;">
+				<h6 class="text-center" style="color: white;font-weight: 700;">Productos</h6>
+				<p class="text-center" style="color: white;font-size:2em;">{{ productos }}</p>
+				<p class="text-center"><i class="fas fa-shopping-bag" style="font-size:3em; color:white"></i></p>
+			</div>
+			<div class="col-3" style="background-color: #28B463;border-radius: 0px 10px 10px 0px;padding-top: 2%;">
+				<h6 class="text-center" style="color: white;font-weight: 700;">Publicaciones</h6>
+				<p class="text-center" style="color: white;font-size:2em;">{{ publicaciones }}</p>
+				<p class="text-center"><i class="fas fa-images" style="font-size:3em; color:white"></i></p>
+			</div>
+			<div class="col-12" style="padding-top: 5%;">
+				<div class="row">
+					<div class="col" style="font-weight: 700;">Total Usuarios: {{ usuarios }}</div>
+				</div>
+			</div>
+			<div class="col-6" style="padding-top: 10%;">
+				<div id="chart_div"></div>
+			</div>
+			<div class="col-6" style="padding-top: 10%;">
+				<div id="chart"></div>
+			</div>
+			<div class="col-6" style="padding-top: 10%;">
+				<div id="ventas_por_mes"></div>
+			</div>
+			<div class="col-6" style="padding-top: 10%;">
+				<div id="productos_por_mes"></div>
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+{% endblock contenidocentral %}

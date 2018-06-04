@@ -1,0 +1,113 @@
+.titulo{
+	font-family: 'Raleway', bold;
+	font-size: 28px;
+}
+
+.texto{
+	font-family: 'Raleway';
+	font-size: 18px;
+	text-shadow: 4px 4px 4px #aaa;
+}
+
+.imagenesp{
+	margin-left: 37%; 
+	margin-top: 14%; 
+	margin-bottom: 15%;
+}
+
+.trabajador{
+	margin-left: 41%; 
+	margin-top: 10%; 
+	margin-bottom: 2%;
+}
+
+.nombres{
+	font-family: 'Berkshire Swash', cursive;
+}
+
+.banner{
+	font-family: 'Ubuntu', sans-serif;
+	color: white;
+	text-shadow:5px 5px 10px black;
+}
+
+.bannersub{
+	font-family: 'Kanit', sans-serif;
+	font-size: 1.1em;
+	color: white;
+	text-shadow:5px 5px 10px black;
+}
+
+.links{
+	text-decoration: none;
+}
+
+#te{
+	text-decoration: none;
+}
+
+.estil{
+	color: white;
+	
+}
+
+
+/*Contact sectiom*/
+.content-header{
+  font-family: 'Oleo Script', cursive;
+  color:#fcc500;
+  font-size: 45px;
+}
+
+.section-content{
+  text-align: center; 
+
+}
+#contact{
+    
+  font-family: 'Teko', sans-serif;
+  padding-top: 60px;
+  width: 100%;
+  width: 100vw;
+  height: 550px;
+  background: #3a6186; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color : #fff;    
+}
+.contact-section{
+  padding-top: 40px;
+}
+.contact-section .col-md-6{
+  width: 50%;
+}
+
+.form-line{
+  border-right: 1px solid #B29999;
+}
+
+.form-group{
+  margin-top: 10px;
+}
+label{
+  font-size: 1.3em;
+  line-height: 1em;
+  font-weight: normal;
+}
+.form-control{
+  font-size: 1.3em;
+  color: #080808;
+}
+textarea.form-control {
+    height: 135px;
+   /* margin-top: px;*/
+}
+
+.submit{
+  font-size: 1.1em;
+  float: right;
+  width: 150px;
+  background-color: transparent;
+  color: #fff;
+
+}
