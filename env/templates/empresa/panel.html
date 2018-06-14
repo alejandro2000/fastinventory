@@ -8,7 +8,7 @@
 
 	{% block personalizado %}
 		<link rel="stylesheet" type="text/css" href="{% static 'css/panel.css' %}">
-		<script type="text/javascript" src="{% static 'css/panel.css' %}"></script>
+		<script type="text/javascript" src="{% static 'js/panel.js' %}"></script>
 	{% endblock personalizado %}
 
 {% block todo %}
@@ -49,6 +49,12 @@
 			                <li>
 			                  <a href="{% url 'productos' %}">
 			                  	<i class="fas fa-prescription-bottle fa-lg"></i> Productos
+			                  </a>
+			                </li>
+
+			                <li>
+			                  <a href="{% url 'list_admin' %}">
+			                  	<i class="fab fa-magento"></i> Publicaciones
 			                  </a>
 			                </li>
 

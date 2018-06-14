@@ -9,8 +9,10 @@ from django.http import HttpResponseRedirect
 from usuario.forms import registroForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
+from functools import reduce
 
-from usuario.models import user2, perfiles
+from usuario.models import user2, perfiles, productosdeseados
+from productos.models import producto
 
 
 class registrarUsuario(CreateView):
@@ -18,6 +20,12 @@ class registrarUsuario(CreateView):
 	template_name = "usuario/usuarioCrear.html"
 	form_class = registroForm
 	success_url = reverse_lazy('ingresoUsuarios_u')
+
+class registrarUsuarioPanel(CreateView):
+	model = User 
+	template_name = "usuario/usuarioCrearPanel.html"
+	form_class = registroForm
+	success_url = reverse_lazy('list_u')
 
 def listarUsuarios(request):
 	ident = request.user.id
@@ -98,11 +106,8 @@ def guardarPerfilUsuario(request, idusu):
 
 def eliminarUsuarios(request, idusu):
 	usuario= get_object_or_404(User, id=idusu)
-	if request.method == 'POST':
-		usuario.delete()
-		return redirect('list_u')
-
-	return render(request,'usuario/usuarioeliminar.html',{'usuario':usuario})
+	usuario.delete()
+	return redirect('list_u')
 
 def contratarEmpleado(request):
 	paraimagen = user2.objects.exclude(perfil=4)
@@ -143,5 +148,54 @@ def despedir(request , idusu):
 	persona.perfil = perfila
 	persona.save()
 	return redirect('consultarEmpleados')
+
+def agregar_a_deseos(request, id):
+	prod = producto.objects.get(id=id)
+	usuario = request.user
+
+	sabersi = productosdeseados.objects.filter(id_producto=id)
+	sabersi = sabersi.filter(id_user2=usuario)
+
+	cantidad = len(sabersi)
+
+	if cantidad == 0:
+		de = productosdeseados(
+			id_producto = prod,
+			id_user2 = usuario
+		)
+		de.save()
+		return redirect('misdeseos')
+	else:
+		return redirect('productos_usua')
+
+def misdeseos(request):
+	usuario = request.user.id
+	contact_list = productosdeseados.objects.filter(id_user2=usuario)
+
+	filtro = request.GET.get('q')
+
+	if filtro:
+	    contact_list = producto.objects.filter(
+	        Q(id__icontains=filtro)|
+	        Q(id_producto__icontains=filtro)|
+	        Q(id_user2__icontains=filtro)
+	        )
+
+	paginator = Paginator(contact_list, 5) # Show 25 contacts per page
+
+	page = request.GET.get('page')
+	contacts = paginator.get_page(page)
+
+	context = {
+	    "titulo": "list",
+	    "object_list": contacts
+	}
+	return render(request, "productos/productos_deseados.html", context)
+
+def eliminar_deseo(request, id):
+	deseo = productosdeseados.objects.get(id=id)
+	deseo.delete()
+	return redirect('misdeseos')
+
 
 

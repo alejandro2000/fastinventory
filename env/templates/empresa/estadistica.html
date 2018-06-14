@@ -37,21 +37,161 @@
 			</div>
 			<div class="col-12" style="padding-top: 5%;">
 				<div class="row">
-					<div class="col" style="font-weight: 700;">Total Usuarios: {{ usuarios }}</div>
+					<div class="col-2" style="font-weight: 700;">Total Usuarios: {{ usuarios }}</div>
+					<div class="col-4 offset-6">
+						<a href="" class="btn btn-warning">Descargar Informe Corporativo</a>
+					</div>
 				</div>
 			</div>
+
+			<!--                 GRAFICOS ESTADISTICOS            -->
+
 			<div class="col-6" style="padding-top: 10%;">
 				<div id="chart_div"></div>
 			</div>
 			<div class="col-6" style="padding-top: 10%;">
 				<div id="chart"></div>
 			</div>
+
 			<div class="col-6" style="padding-top: 10%;">
 				<div id="ventas_por_mes"></div>
 			</div>
 			<div class="col-6" style="padding-top: 10%;">
 				<div id="productos_por_mes"></div>
 			</div>
+
+			<script type="text/javascript">
+						// Load the Visualization API and the corechart package.
+				google.charts.load('current', {'packages':['corechart']});
+
+				// Set a callback to run when the Google Visualization API is loaded.
+				google.charts.setOnLoadCallback(drawChart);
+				google.charts.setOnLoadCallback(proyecciones);
+
+				// Callback that creates and populates a data table,
+				// instantiates the pie chart, passes in the data and
+				// draws it.
+				function drawChart() {
+
+				  // Create the data table.
+				  var data = new google.visualization.DataTable();
+
+				  data.addColumn('string', 'Topping');
+				  data.addColumn('number', 'Slices');
+				  data.addRows([
+				    ['Administradores', {{ ventar_por_administradores }}],
+				    ['Clientes', {{ ventar_por_clientes }}],
+				    ['Vendedores', {{ ventar_por_vendedores }}]
+				  ]);
+
+				  // Set chart options
+				  var options = {'title':'Reporte de Ventas',
+				                 'width':400,
+				                 'height':300};
+
+				  // Instantiate and draw our chart, passing in some options.
+				  var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+				  chart.draw(data, options);
+
+				  var options = {'title':'Reporte de Ventas',
+				                 'width':400,
+				                 'height':300};
+
+				  // Instantiate and draw our chart, passing in some options.
+				  var chart = new google.visualization.BarChart(document.getElementById('chart'));
+				  chart.draw(data, options);
+
+				  
+				}
+				function proyecciones() {
+
+				  // Create the data table.
+				  var data = new google.visualization.DataTable();
+				  data.addColumn('string', 'Topping');
+				  data.addColumn('number', 'Slices');
+				  data.addRows([
+				    ['Clientes', 1],
+				    ['Administradores', 1],
+				    ['Vendedor', 5]
+				  ]);
+
+				  // Set chart options
+				  var options = {'title':'Ventas a lo largo del tiempo',
+				                 'width':400,
+				                 'height':300};
+
+				  // Instantiate and draw our chart, passing in some options.
+				  var chart = new google.visualization.AreaChart(document.getElementById('ventas_por_mes'));
+				  chart.draw(data, options);
+
+				  var options = {'title':'Productos Estrella',
+				                 'width':400,
+				                 'height':300};			  
+				}
+				function estrellas() {
+
+				  // Create the data table.
+				  var data = new google.visualization.DataTable();
+				  data.addColumn('string', 'Topping');
+				  data.addColumn('number', 'Slices');
+				  data.addRows([
+				    ['Clientes', 1],
+				    ['Administradores', 1],
+				    ['Vendedor', 5]
+				  ]);
+
+				  // Set chart options
+				  var options = {'title':'Ventas a lo largo del tiempo',
+				                 'width':400,
+				                 'height':300};
+
+				  // Instantiate and draw our chart, passing in some options.
+				  var chart = new google.visualization.AreaChart(document.getElementById('ventas_por_mes'));
+				  chart.draw(data, options);
+
+				  var options = {'title':'Productos Estrella',
+				                 'width':400,
+				                 'height':300};			  
+				}
+			</script>
+
+			<div id="fb-root"></div>
+			<script>
+				(function(d, s, id) {
+				  var js, fjs = d.getElementsByTagName(s)[0];
+				  if (d.getElementById(id)) return;
+				  js = d.createElement(s); js.id = id;
+				  js.src = 'https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.0&appId=1509329655833727&autoLogAppEvents=1';
+				  fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
+			</script>
+
+			<div class="col-12">
+				<div class="row justify-content-center" style="padding-bottom: 5%">
+					<div class="col-5">
+						<div class="fb-page" 
+						  data-tabs="timeline"
+						  data-href="https://www.facebook.com/AllBusinessCom/"
+						  data-width="380" 
+						  data-hide-cover="false">
+						</div>
+					</div>
+					<div class="col-5">
+						<div class="fb-page" 
+						  data-tabs="timeline"
+						  data-href="https://www.facebook.com/negociosyemprendimiento/"
+						  data-width="380" 
+						  data-hide-cover="false">
+						</div>
+					</div>
+				</div>	
+			</div>
+
+			<div class="col-12">
+				<p class="text-center text-muted"><a href="https://analytics.google.com/analytics/web/#/report-home/a120518518w178141353p176710786" target="_blank">¿Desea Conocer información relevante sobre la empresa?</a></p>
+			</div>
+
+			
 
 		</div>
 	</div>

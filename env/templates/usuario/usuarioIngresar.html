@@ -43,6 +43,9 @@
 			                            <a href="javascript:void(0)" class="forgot-pass">Olvidaste la contraseña</a>
 			                        </div>
 			                    </div>
+			                    <br>
+								<p class="text-center" style="color:white;"><strong>O Puedes ingresar con Google</strong></p>
+								<p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-info"><i class="fab fa-google">Google</i></a><br></p>
 			                </div>
 			                {% if form.errors %}
 							    {% for field in form %}

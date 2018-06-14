@@ -30,7 +30,7 @@ def post_save(request):
 		user = usuario,
 	)
 	publi.save()
-	return redirect('list_p')
+	return redirect('list_admin')
 
 
 def post_update(request, slug):
@@ -114,6 +114,27 @@ def post_list(request):
 	}
 	return render(request, 'indexListar.html', contexto)
 
+def post_list_panel(request):
+	contact_list = Post.objects.all()
+
+	filtro = request.GET.get('q')
+
+	if filtro:
+		contact_list = Post.objects.filter(
+			Q(titulo__icontains=filtro)|
+			Q(contenido__icontains=filtro)
+			)
+
+	paginator = Paginator(contact_list, 5) # Show 25 contacts per page
+
+	page = request.GET.get('page')
+	contacts = paginator.get_page(page)
+
+	contexto = {
+		'contacts': contacts
+	}
+	return render(request, 'indexListarPanel.html', contexto)
+
 """	def get_context_data(self, **kwargs):
           		busqueda = self.request.GET.get("q")
           		context = super().get_context_data(**kwargs)
@@ -136,8 +157,7 @@ def post_delete(request, slug): # consulta y elimina si el metodo es post
 		publi = Post.objects.get(slug=slug)
 		if request.method == 'POST':
 			publi.delete()
-			return redirect('list_p')
-		return render(request,'advertenciaEliminar.html',{'publi':publi})
+			return redirect('list_admin')
 
 def list_tecnologia(request):
 	dias = timedelta(days=3)

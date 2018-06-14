@@ -1,40 +1,69 @@
-{% extends "base/base.html" %}
-
+{% extends "empresa/panel.html" %}
+{% load staticfiles %}
 
 {% block titulo %}
 	<title>Crear post</title>
 {% endblock titulo %}
 
-{% block contenido %}
-		<form method="POST" action="{% url 'guardar_p' %}" enctype="multipart/form-data">
-			{% csrf_token %}
+{% block personalizado %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/panel.css' %}">
+	<script type="text/javascript" src="{% static 'js/panel.js' %}"></script>
+	<script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+{% endblock personalizado %}
 
-			<div class="form-group">
-			    <label for="Titulo">Titulo</label>
-			    <input type="text" class="form-control" id="Titulo" placeholder="Titulo" name="titulo" required>
-			</div>
-			<div class="form-group">
-				<label for="Contenido">Contenido del la Publicación</label>
-				<textarea class="form-control" id="Contenido" rows="5" name="contenido"></textarea>
-			</div>
-			<div class="form-group">
-			    <label for="Imagen">Imagen del Post</label>
-			    <input type="file" class="form-control-file" id="Imagen" placeholder="Suba una imagen para el perfil" name="imagen" required>
-			    <small id="fileHelp" class="form-text text-muted">Cargue Una Imagen de la mejor calidad posible para el post.</small>
-			</div>
-			<div class="form-group">
-			    <label for="Categoria">Categoria</label>
-			    <select class="form-control" id="Categoria" name="categoria">
-			    	<option>-------</option>
-			    	{% for c in cat %}
-			    		<option value="{{ c.id }}">{{ c.nombre_categoria }}</option>
-			    	{% endfor %}
-			    </select>
-			</div>
-			<div class="form-group">
-			    <input type="text" value="{{ user.id }}" name="user" hidden>
-			</div>
-			<a class="btn btn-primary" href="{% url 'list_p' %}" role="button">Volver a publicaciones</a>
-			<button class="btn btn-primary" type="submit">Guardar</button>
-		</form>
-{% endblock contenido %}
+{% block contenidocentral %}
+		<div class="col-12">
+			<form method="POST" action="{% url 'guardar_p' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+						    <label for="Titulo">Titulo</label>
+						    <input type="text" class="form-control" id="Titulo" placeholder="Titulo" name="titulo" required>
+						</div>
+						<div class="form-group">
+							<label for="Contenido">Contenido del la Publicación</label>
+							<textarea class="form-control" id="Contenido" rows="2" name="contenido"></textarea>
+							<script>
+					        	CKEDITOR.replace( 'contenido' );
+					    	</script>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+						    <label for="Imagen">Imagen del Post</label>
+						    <input type="file" class="form-control-file" id="Imagen" placeholder="Suba una imagen para el perfil" name="imagen" required>
+						    <small id="fileHelp" class="form-text text-muted">Cargue Una Imagen de la mejor calidad posible para el post.</small>
+						</div>
+						<div class="form-group">
+						    <label for="Categoria">Categoria</label>
+						    <select class="form-control" id="Categoria" name="categoria">
+						    	<option>-------</option>
+						    	{% for c in cat %}
+						    		<option value="{{ c.id }}">{{ c.nombre_categoria }}</option>
+						    	{% endfor %}
+						    </select>
+							</div>
+						</div>
+						<div class="form-group">
+						    <input type="text" value="{{ user.id }}" name="user" hidden>
+						</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-2">
+						<a class="btn btn-info" href="{% url 'list_admin' %}" role="button">Volver</a>
+					</div>
+					<div class="col-2">
+						<button class="btn btn-success" type="submit">Guardar</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+
+			
+
+			
+			
+		
+{% endblock contenidocentral %}

@@ -1,0 +1,45 @@
+{% extends "empresa/panel.html" %}
+{% load staticfiles %}
+
+
+{% block contenidocentral %}
+	<div class="col-12">
+		<div class="row justify-content-center">
+			<div class="col-4">
+				<img class="img img-fluid" src="{% static 'img/people.png' %}">
+			</div>
+			<div class="col-5">
+				<form class="login" method="post">
+					{% csrf_token %}
+				    <input style="margin-bottom: 3%;" type="text" class="form-control" id="nombreusu" placeholder="Nombre de Usuario" name="username" required>
+				    <input style="margin-bottom: 3%;" type="text" class="form-control" id="nombres" placeholder="Nombres" name="first_name" required>
+				    <input style="margin-bottom: 3%;" type="text" class="form-control" id="apellidos" placeholder="Apellidos" name="last_name">
+				    <input style="margin-bottom: 3%;" type="email" class="form-control" id="correo" placeholder="Correo" name="email" required>
+				    <input style="margin-bottom: 3%;" type="password" class="form-control" id="contraseña" placeholder="contraseña 1" name="password1" required>
+				    <input style="margin-bottom: 3%;" type="password" class="form-control" id="contraseña1" placeholder="contraseña 2" name="password2" required>
+				    <div class="div">
+				    	<div class="col-auto" style="margin-left: 30%">
+							<input type="submit" value="Ingresar" class="btn btn-success" />
+							<a class="btn btn-info" href="{% url 'list_u' %}">Volver</a>
+				    	</div>
+				    </div>
+				    {% if form.errors %}
+					    {% for field in form %}
+					        {% for error in field.errors %}
+					            <div class="alert alert-error">
+					                <strong style="color:black">{{ error|escape }}</strong>
+					            </div>
+					        {% endfor %}
+					    {% endfor %}
+					    {% for error in form.non_field_errors %}
+					        <div class="alert alert-error">
+					            <strong style="color:black">{{ error|escape }}</strong>
+					        </div>
+					    {% endfor %}
+					{% endif %}
+				</form>
+			</div>
+		</div>
+	</div>
+	
+{% endblock contenidocentral %}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Factura de venta</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<style>
+		table {
+		    font-family: arial, sans-serif;
+		    border-collapse: collapse;
+		    width: 100%;
+		}
+
+		td, th {
+		    border: 1px solid #dddddd;
+		    text-align: left;
+		    padding: 8px;
+		}
+
+		tr:nth-child(even) {
+		    background-color: #dddddd;
+		}
+	</style>
+	<head>
+		<h3>Factura N° {{ nombreusu.id }}</h3>
+	</head>
+	<section>
+		<table>
+			<tr>
+				<th>Fecha de la venta</th>
+				<th>Codigo del pais</th>
+				<th>Nombre del Usuario</th>
+				<th>Productos Comprados</th>
+				<th>Estado de la Compra</th>
+			</tr>
+			<tr>
+			<td>{{ nombreusu.fecha }}</td>
+			<td>{{ nombreusu.paisEnvio }}</td>
+			<td>{{ nombreusu.user }}</td>
+			<td>
+				<ul>
+					{% for p in productos  %}
+						<li>{{ p.idProducto }}</li>
+					{% endfor %}
+				</ul>
+			</td>
+			<td>{{ nombreusu.estado_proceso }}</td>
+			</tr>
+		</table>
+	</section>
+	<footer>
+		<div style="padding-left: 240px;">
+			<h4>Todos los derechos reservados fastinventory - 2018</h4>
+			<p style="padding-left: 300px;">Información de contacto</p>
+			<p style="padding-left: 300px;">inventoryfast@gmail.com</p>
+		</div>
+	</footer>
+</body>
+</html>

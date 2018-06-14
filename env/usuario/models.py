@@ -50,7 +50,7 @@ class user2(models.Model):
 
 class productosdeseados(models.Model):
 	id_producto  = models.ForeignKey(producto, on_delete=models.CASCADE)
-	id_user2 = models.ForeignKey(user2, on_delete=models.CASCADE)
+	id_user2 = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 

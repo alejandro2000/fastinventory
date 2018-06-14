@@ -1,48 +1,113 @@
 {% extends "empresa/panel.html" %}
 {% load staticfiles %}
 
+{% block personalizado %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/panel.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/facturas.css' %}">
+	<script type="text/javascript" src="{% static 'js/panel.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/facturas.js' %}"></script>
+{% endblock personalizado %}
+
 {% block contenidocentral %}
-	<table class="table table-hover table-responsive">
-	  <thead>
-	    <tr class="">
-	      <th>#</th>
-	      <th>Pais de envio</th>
-	      <th>Nombre de usuario</th>
-	      <th>Estado de la compra</th>
-	      <th>Acciones</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	  	{% for obj in contacts %}
-	  		<tr>
-		      <td>{{ obj.id }}</td>
-		      <td>{{ obj.paisEnvio }}</td>
-		      <td>
-		      	{{ obj.user }}
-		      </td>
-		      <td>{{ obj.estado_proceso }}</td>
-		      <td><a href="#"><span class="badge badge-success">Adjuntar factura</span></a></td>
-		    </tr>
-	  	{% endfor %}
-	  </tbody>
-	</table>
-	<div class="row justify-content-center">
-	<div class="col-auto pagination">
-	    <span class="step-links">
-	        {% if contacts.has_previous %}
-	            <a class="btn btn-outline-primary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; Primero</a>
-	            <a class="btn btn-outline-primary" href="?page={{ contacts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a>
-	        {% endif %}
+	<div class="col-12">
+		<div class="col-12">
+			<table class="table table-hover table-responsive">
+			  <thead>
+			    <tr class="">
+			      <th>#</th>
+			      <th>Fecha de la venta</th>
+			      <th>Pais de envio</th>
+			      <th>Nombre de usuario</th>
+			      <th>Productos</th>
+			      <th>Estado de la compra</th>
+			      <th>Factura</th>
+			      <th>Acciones</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	{% for obj,prods in contacts %}
+			  		<tr>
+				      <td>{{ obj.id }}</td>
+				      <td>{{ obj.fecha }}</td>
+				      <td>{{ obj.paisEnvio }}</td>
+				      <td>{{ obj.user }}</td>
+				      <td>
+				      	{% for p in prods %}
+				      		<li>{{ p.idProducto }}</li>
+				      	{% endfor %}
+				      </td>
+				      <td>{{ obj.estado_proceso }}</td>
+				      <td>
+				      	{% if obj.comprobacion %}
+							<img src="{{ obj.comprobacion.url }}" width="30%;" data-toggle="modal" data-target="#{{ obj.id }}">
+							<!-- Modal de mensajes -->
+							<div class="modal fade" id="{{ obj.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ obj.id }}" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							      	<div class="container-fluid">
+								        <img src="{{ obj.comprobacion.url }}" width="100%;">
+							        </div>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+				      	{% else %}
+							<img src="{% static 'img/bill.png' %}" width="30%;">
+				      	{% endif %}
+				      	
+				      </td>
+				      <td>
+				      	{% if permiso == 'admin' %}
+				      		<a href="{% url 'descargar_factura' obj.id %}" target="_blank"><span class="badge badge-info">Imprimir</span></a>
+				      	{% else %}
+				      		<form method="post" action="{% url 'adjuntar_f' obj.id %}" enctype="multipart/form-data">
+					      		{% csrf_token %}
+					            <input type="file" name="compru">
+					            <button type="submit" class="btn btn-info btn-sm">Montar imagen</button> 
+							</form>
+							<hr>
+							<!--
+								PARA MONTAR VARIAS IMAGENES
+								<input type="file" name="comprobacion" class="badge badge-success" data-multiple-caption="{count} archivos seleccionados" multiple>-->
+					      	<a href="#"><span class="badge badge-info">Imprimir</span></a>
+					      	<a href="#"><span class="badge badge-danger">Eliminar Factura</span></a>
+				      	{% endif %}
+				      	
+				      </td>
+				    </tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+		</div>
+		<div class="col-12">
+			<div class="row justify-content-center" style="padding-top: 3%">
+				<div class="col-auto pagination">
+				    <span class="step-links">
+				        {% if contacts.has_previous %}
+				            <a class="btn btn-outline-primary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; Primero</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a>
+				        {% endif %}
 
-	        <span class="current lead">
-	            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}
-	        </span>
+				        <span class="current lead">
+				            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}
+				        </span>
 
-	        {% if contacts.has_next %}
-	            <a class="btn btn-outline-primary" href="?page={{ contacts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a>
-	            <a class="btn btn-outline-primary" href="?page={{ contacts.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ultimo &raquo;</a>
-	        {% endif %}
-	    </span>
+				        {% if contacts.has_next %}
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ultimo &raquo;</a>
+				        {% endif %}
+				    </span>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
+	
+
 {% endblock contenidocentral %}

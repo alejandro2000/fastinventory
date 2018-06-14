@@ -1,0 +1,97 @@
+{% extends "empresa/panel.html" %}
+{% load staticfiles %}
+
+{% block titulo %}
+	<title>Publicaciones</title>
+{% endblock titulo %}
+
+{% block contenidocentral %}
+
+	<div class="row justify-content-start" style="margin-bottom: 10px;">
+		<div class="col-12" style="margin-bottom: 2%;">
+			<form class="form-inline my-2 my-lg-0" method="GET">
+		      <input class="form-control mr-sm-2" type="text" placeholder="Buscar" name="q" value="{{ request.GET.q }}">
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+		      <a class="btn btn-success" style="padding-left: 1%;margin-left: 1%;color: white;" href="{% url 'create_p' %}"><i class="fas fa-user-plus"></i> Crear nueva publicación</a>
+		    </form>
+		</div>
+		<div class="col-12">
+			<div class="row">
+				<table class="table table-hover">
+				  <thead>
+				    <tr>
+				      <th>Código</th>
+				      <th>Titulo</th>
+				      <th>fecha de publicación</th>
+				      <th>Autor</th>
+				      <th>Contenido</th>
+				      <th>imagen</th>
+				      <th>Acciones</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  	{% for obj in contacts %}
+				  		<tr>
+					      <th scope="row">{{ obj.id }}</th>
+					      <td>{{ obj.titulo }}</td>
+					      <td>{{ obj.timestamp }}</td>
+					      <td>{{ obj.user }}</td>
+					      <td>{{ obj.contenido|safe|truncatechars:50 }}</td>
+					      <td>
+					      	<img class="img-fluid" src="{{ obj.imagen.url }}" width="15%;"></img>
+					      </td>
+					      <td><a class="badge badge-danger" href="#" role="button" data-toggle="modal" data-target="#{{ obj.id }}">Eliminar</a></td>
+					    </tr>
+					    <!--Alerta de eliminar usuario--> 
+							<div class="modal fade" id="{{ obj.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ obj.id }}" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">Esta seguro que desea eliminar la publicación <b>{{ obj.titulo }}</b></h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							      	<form method="POST" action="{% url 'delete_p' obj.slug %}">
+										{% csrf_token %}
+										<button type="submit" class="btn btn-primary">Aceptar</button>
+									</form>
+							      </div>
+							    </div>
+							  </div>
+						</div>
+				  	{% endfor %}
+				  </tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="row justify-content-center">
+				<div class="col-auto pagination">
+				    <span class="step-links">
+				        {% if contacts.has_previous %}
+				            <a class="btn btn-outline-primary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; Primero</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a>
+				        {% endif %}
+
+				        <span class="current lead">
+				            Pagina {{ contacts.number }} de {{ contacts.paginator.num_pages }}
+				        </span>
+
+				        {% if contacts.has_next %}
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a>
+				            <a class="btn btn-outline-primary" href="?page={{ contacts.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ultimo &raquo;</a>
+				        {% endif %}
+				    </span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+	
+
+	
+{% endblock contenidocentral %}

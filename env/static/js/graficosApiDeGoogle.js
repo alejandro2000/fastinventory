@@ -1,5 +1,5 @@
 // Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart']});
+/*google.charts.load('current', {'packages':['corechart']});
 
 // Set a callback to run when the Google Visualization API is loaded.
 google.charts.setOnLoadCallback(drawChart);
@@ -12,13 +12,13 @@ function drawChart() {
 
   // Create the data table.
   var data = new google.visualization.DataTable();
+
   data.addColumn('string', 'Topping');
   data.addColumn('number', 'Slices');
   data.addRows([
-    ['Empleados', 3],
-    ['Clientes', 1],
     ['Administradores', 1],
-    ['Vendedor', 5]
+    ['Clientes', {{ ventar_por_clientes }}],
+    ['Vendedores', {{ ventar_por_vendedores }}]
   ]);
 
   // Set chart options
@@ -47,7 +47,6 @@ function proyecciones() {
   data.addColumn('string', 'Topping');
   data.addColumn('number', 'Slices');
   data.addRows([
-    ['Empleados', 3],
     ['Clientes', 1],
     ['Administradores', 1],
     ['Vendedor', 5]
@@ -71,4 +70,4 @@ function proyecciones() {
   chart.draw(data, options);
 
   
-}
+}*/

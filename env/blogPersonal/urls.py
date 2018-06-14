@@ -33,7 +33,10 @@ urlpatterns = [
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     path('usuario/', include("usuario.urls")),
     path('productos/', include("productos.urls")),
+
     path('accounts/login/', login, {'template_name':'usuario/usuarioIngresar.html'}, name='ingresoUsuarios_u'),
+    url('auth/', include('social_django.urls', namespace='social')),
+
     path('logout/', logout, name='logout'),
     path('', include("informacion.urls")),
 

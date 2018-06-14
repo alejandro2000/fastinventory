@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.core.mail import EmailMessage
-from productos.models import producto
+from productos.models import producto,factura
 from posts.models import Post
 from usuario.models import user2
 
@@ -85,11 +85,31 @@ def estadisticas(request):
 	for obj in empleados:
 		empls = empls + 1
 
+	#traer cuantos productos han comprado los empleados
+
+	facturas = factura.objects.all();
+
+	admins = 0;
+	clientes = 0;
+	vendedores =0;
+
+	for f in facturas:
+		if f.user.user2.perfil.nombre_perfil == "administrador":
+			admins=admins+1;
+		elif f.user.user2.perfil.nombre_perfil == "cliente":
+			clientes=clientes+1;
+		elif f.user.user2.perfil.nombre_perfil == "vendedor":
+			vendedores=vendedores+1;
+
+
 	contexto = {
 		"usuarios" : usurs,
 		"productos" : prods,
 		"publicaciones" : Posts,
-		"empleados":empls
+		"empleados":empls,
+		'ventar_por_administradores':admins,
+		'ventar_por_clientes':clientes,
+		'ventar_por_vendedores':vendedores,
 	}
 	return render(request,"empresa/estadistica.html",contexto)
 
@@ -101,5 +121,8 @@ class descargar(View):
 								} lo podemos enviar por contexto"""
 		pdf =  render_to_pdf("empresa/politicasDePrivacidad.html")
 		return HttpResponse(pdf, content_type="application/pdf")
+
+def voz(request):
+	return render(request,'base/voz.html')
 
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>voz</title>
+</head>
+<body>
+	<p>hola mundo voz</p>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+	<script>
+		if (annyang) {
+		  // Let's define a command.
+		  var commands = {
+		    'saluda a *name': function(name) { alert('saludos '+name+', bienvenido, soy tu asistente personal '+name); }
+		  };
+
+		  // Add our commands to annyang
+		  annyang.addCommands(commands);
+		  annyang.setLanguage('es-MX')
+
+		  // Start listening.
+		  annyang.start();
+		}
+	</script>
+</body>
+</html>

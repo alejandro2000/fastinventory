@@ -1,0 +1,144 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block titulo %}
+	<title>Productos</title>
+{% endblock titulo %}
+
+{% block personalizado %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/generic.css' %}">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/vozpost.js' %}"></script>
+{% endblock personalizado %}
+
+{% block contenidomain %}
+<a href="#" id="js_up" class="boton-subir">
+	<!-- link del icono http://fontawesome.io/icon/rocket/ -->
+
+	<i class="fas fa-arrow-circle-up" aria-hidden="true"></i>
+	</a>
+	<style media="screen">
+	/*botón up*/
+	.boton-subir{
+	display: none;
+		background: #0275D8;
+	border: thin solid #fff;
+	border-radius: 3px;
+	position: fixed;
+	right: 15px;
+	bottom:2px;
+	z-index: 999999999;
+	}
+	
+	/*evento hover*/
+	.boton-subir:hover{
+	box-shadow:   0px 2px 10px 0px rgba(255, 255, 255, 0.75);
+	}
+	/*estilos para el tag i*/
+	.boton-subir i{
+	color: #fff;
+	font-size: 1.5em;
+	padding: 10px 10px 10px 7px;
+	-ms-transform: rotate(-45deg); /* IE 9 */
+	-webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+	transform: rotate(-45deg);
+	}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://use.fontawesome.com/a18b0c2e94.js"></script>
+	<!-- script para que funcione al 100% el botón ir arriba -->
+	<script>
+	//invocamos al objeto (window) y a su método (scroll), solo se ejecutara si el usuario hace scroll en la página
+	$(window).scroll(function(){
+	  if($(this).scrollTop() > 300){ //condición a cumplirse cuando el usuario aya bajado 301px a más.
+	    $("#js_up").slideDown(300); //se muestra el botón en 300 mili segundos
+	  }else{ // si no
+	    $("#js_up").slideUp(300); //se oculta el botón en 300 mili segundos
+	  }
+	});
+
+	//creamos una función accediendo a la etiqueta i en su evento click
+	$("#js_up i").on('click', function (e) {
+	  e.preventDefault(); //evita que se ejecute el tag ancla (<a href="#">valor</a>).
+	  $("body,html").animate({ // aplicamos la función animate a los tags body y html
+	    scrollTop: 0 //al colocar el valor 0 a scrollTop me volverá a la parte inicial de la página
+	  },700); //el valor 700 indica que lo ara en 700 mili segundos
+	  return false; //rompe el bucle
+	});
+	</script>
+	<div class="col-12">
+		<div class="row" style="padding-left: 10%;">
+			{% if messages %}
+				<div class="col-12">
+					<ul class="messages">
+					    {% for message in messages %}
+					    <div class="alert alert-success alert-dismissible fade show" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						    <span aria-hidden="true">&times;</span>
+						  </button>
+						  <strong>{% if message.tags %}{% endif %}{{ message }}.</strong>
+						</div>
+					    <li</li>
+					    {% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+			<div class="col-12">
+				<div class="row justify-content-start" style="margin-bottom: 20px;">
+					<div class="col-12">
+						<p><small class="text-muted">Tip - activa tu micrófono para hacer mucho más fácil su busqueda,con la palabra <b>buscar</b> seguido del nombre del producto</small></p>
+					</div>
+					<div class="col-auto">
+						<form class="form-inline my-2 my-lg-0" method="GET" action="" id="search_form">
+					      <input id="publicacion" class="form-control mr-sm-2" type="text" placeholder="Buscar" name="q" value="{{ request.GET.q}}">
+					      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+					    </form>
+					</div>
+				</div>
+			</div>
+
+			{% if object_list %}
+				{% for obj in object_list %}
+					<div class="col-12 col-sm-6 col-md-3 card tarjeta" style="width: 20rem; margin-right: 1%;margin-bottom: 1%;">
+					  <a class="text-center" href="{% url 'detalle_prod' obj.slug %}"><img class="card-img-top img-fluid" src="{{ obj.imagen1.url }}" alt="{{ obj.titulo }}" title="{{ obj.titulo }}" width="90"></a>
+					  <div class="card-block">
+					    <h4 class="card-title text-center">{{ obj.titulo }}</h4>
+					    <p class="card-text text-left">{{ obj.contenido|truncatechars:50 }}</p>
+
+					  </div>
+					  <div class="card-footer text-center">
+					      <a class="btn btn-success" style="color:white;" href="{% url 'detalle_prod' obj.slug %}">$ {{ obj.precio|intcomma }}</a>
+					      <a href="{% url 'deseos' obj.id %}" title="Agregar producto a mis deseos" class="btn btn-primary" style="color:white;">
+					      	<i class="fas fa-heart"></i>
+					      </a>
+					    </div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<h2>No hay productos disponibles</h2>
+			{% endif %}
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-auto pagination">
+			    <span class="step-links">
+			        {% if object_list.has_previous %}
+			            <a class="btn btn-outline-primary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; Primero</a>
+			            <a class="btn btn-outline-primary" href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a>
+			        {% endif %}
+
+			        <span class="current lead">
+			            Pagina {{ object_list.number }} de {{ object_list.paginator.num_pages }}
+			        </span>
+
+			        {% if object_list.has_next %}
+			            <a class="btn btn-outline-primary" href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Siguiente</a>
+			            <a class="btn btn-outline-primary" href="?page={{ object_list.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ultimo &raquo;</a>
+			        {% endif %}
+			    </span>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock contenidomain %}

@@ -54,6 +54,10 @@ INSTALLED_APPS = [
 
     'django.contrib.humanize',
 
+    #para autenticación con google
+
+    'social_django',
+
 ]
 
 
@@ -66,6 +70,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+ 'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+ 'social_core.backends.google.GoogleOpenId',  # for Google authentication
+ 'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+ 'social_core.backends.github.GithubOAuth2',  # for Github authentication
+ 'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
+ 'django.contrib.auth.backends.ModelBackend',
+)
 
 ROOT_URLCONF = 'blogPersonal.urls'
 
@@ -80,10 +93,19 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='287018921038-j7hthcqijlh5qnsphiugsq1k61abjudb.apps.googleusercontent.com'  #Paste CLient Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Rk7nYjUiEt1r5a8Ieffwy3IL' #Paste Secret Key
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1509329655833727'
+SOCIAL_AUTH_FACEBOOK_SECRET = '108920492671151a15385fe107a48099'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 WSGI_APPLICATION = 'blogPersonal.wsgi.application'
 
@@ -165,7 +187,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static_media_cdn")
 
 LOGIN_REDIRECT_URL = reverse_lazy('index_p')
 
-LOGOUT_REDIRECT_URL = reverse_lazy('index_p')
+LOGOUT_REDIRECT_URL = reverse_lazy('ingresoUsuarios_u')
 
 # ckeditor
 CKEDITOR_UPLOAD_PATH = "uploads/"

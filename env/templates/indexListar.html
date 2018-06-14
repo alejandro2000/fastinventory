@@ -6,8 +6,67 @@
 	<title>Publicaciones</title>
 {% endblock titulo %}
 
+{% block personalizado %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/generic.css' %}">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/vozpost.js' %}"></script>
+{% endblock personalizado %}
+
 
 {% block contenido %}
+<a href="#" id="js_up" class="boton-subir">
+<!-- link del icono http://fontawesome.io/icon/rocket/ -->
+
+<i class="fas fa-angle-double-up" aria-hidden="true"></i>
+</a>
+<style media="screen">
+/*botón up*/
+.boton-subir{
+display: none;
+background: #0275D8;
+border: thin solid #fff;
+border-radius: 3px;
+position: fixed;
+right: 15px;
+bottom:2px;
+z-index: 999999999;
+}
+/*evento hover*/
+.boton-subir:hover{
+box-shadow:   0px 2px 10px 0px rgba(255, 255, 255, 0.75);
+}
+/*estilos para el tag i*/
+.boton-subir i{
+color: #fff;
+font-size: 1.5em;
+padding: 10px 10px 10px 7px;
+-ms-transform: rotate(-45deg); /* IE 9 */
+-webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+transform: rotate(-45deg);
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://use.fontawesome.com/a18b0c2e94.js"></script>
+<!-- script para que funcione al 100% el botón ir arriba -->
+<script>
+//invocamos al objeto (window) y a su método (scroll), solo se ejecutara si el usuario hace scroll en la página
+$(window).scroll(function(){
+  if($(this).scrollTop() > 300){ //condición a cumplirse cuando el usuario aya bajado 301px a más.
+    $("#js_up").slideDown(300); //se muestra el botón en 300 mili segundos
+  }else{ // si no
+    $("#js_up").slideUp(300); //se oculta el botón en 300 mili segundos
+  }
+});
+
+//creamos una función accediendo a la etiqueta i en su evento click
+$("#js_up i").on('click', function (e) {
+  e.preventDefault(); //evita que se ejecute el tag ancla (<a href="#">valor</a>).
+  $("body,html").animate({ // aplicamos la función animate a los tags body y html
+    scrollTop: 0 //al colocar el valor 0 a scrollTop me volverá a la parte inicial de la página
+  },700); //el valor 700 indica que lo ara en 700 mili segundos
+  return false; //rompe el bucle
+});
+</script>
 		{% if messages %}
 		{% for message in messages %}
 			<div class="alert alert-{{ message.tags }}">{{ message }}</div>
@@ -17,63 +76,66 @@
 		<div class="contenedor" style="margin-left: 1%;">
 
 			<div class="row justify-content-start" style="margin-bottom: 20px;">
+				<div class="col-12">
+					<p><small class="text-muted">Tip - activa tu micrófono para hacer mucho más fácil su busqueda,con la palabra <b>buscar</b> seguido del nombre del la publicación</small></p>
+				</div>
 				<div class="col-auto">
-					<form class="form-inline my-2 my-lg-0" method="GET" action="">
-				      <input class="form-control mr-sm-2" type="text" placeholder="Buscar" name="q" value="{{ request.GET.q}}">
+					<form class="form-inline my-2 my-lg-0" method="GET" action="" id="search_form">
+				      <input id="publicacion" class="form-control mr-sm-2" type="text" placeholder="Buscar" name="q" value="{{ request.GET.q}}">
 				      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
 				    </form>
 				</div>
 			</div>
 
 
-					{% for obj in contacts %}
+			{% for obj in contacts %}
 
-		<div class="row border">
+				<div class="row border">
 
-			<div class="col-md-4 car-image-block">
-				<a href="#"><img id="imagenn" src="{{ obj.imagen.url }}"></a>
-			</div>
-			<div class="col-md-8 card-body ">
-			<h3>{{ obj.titulo }}</h3>
+					<div class="col-md-4 car-image-block">
+						<a href="#"><img id="imagenn" src="{{ obj.imagen.url }}"></a>
+					</div>
+					<div class="col-md-8 card-body ">
+					<h3>{{ obj.titulo }}</h3>
 
-			<h5><small><i><strong>Autor: </strong> {{ obj.user }}</i></small></h5>
-			<small class="text-muted"><i><strong>Categoria: </strong> {{ obj.categoria }}</i></small>
-			<ul class="list-inline">
-				<li class="list-inline-item">{{ obj.contenido|safe|truncatechars:100 }}</li>
-			</ul>
-			<a class="btn btn-info" href="{% url 'detail_p' obj.slug %}">Continuar leyendo</a>
-			</div>
+					<h5><small><i><strong>Autor: </strong> {{ obj.user }}</i></small></h5>
+					<small class="text-muted"><i><strong>Categoria: </strong> {{ obj.categoria }}</i></small>
+					<ul class="list-inline">
+						<li class="list-inline-item">{{ obj.contenido|safe|truncatechars:100 }}</li>
+					</ul>
+					<a class="btn btn-info" href="{% url 'detail_p' obj.slug %}">Continuar leyendo</a>
+					</div>
 
-		</div>
-		<br>
-			 <style media="screen">
-				 #imagenn {width:100%;}
-				.car-image-block {padding:0px;margin:0px;}
-				.car-image-block img {min-height: 200px; overflow: hidden;}
+				</div>
+				<br>
+					 <style media="screen">
+						 #imagenn {width:100%;}
+						.car-image-block {padding:0px;margin:0px;}
+						.car-image-block img {min-height: 200px; overflow: hidden;}
 
-			</style>
+					</style>
 
-					<!--<div class="card" >
-							<table class="" align="center" width="*%" >
-							<tr><td style="padding: 0px;">
-							<img src="{{ obj.imagen.url }}" style="width: 15rem;" alt="" ></td>
-							<td style="padding-left: 5%;"><div class="card-block">
-						    <h4 class="card-title">{{ obj.titulo }}</h4>
-						  </div>{{ obj.contenido|safe|truncatechars:150 }} </td>
-							</tr></table>
-							<div class="card-footer">
-								<a id="boton" href="{% url 'detail_p' obj.slug %}" class="btn btn-primary" style="width: 100%;">Continuar leyendo</a>
-								<p class="card-text"><small><i><strong>Autor: </strong> {{ obj.user }}</i></small></p>
-								<small class="text-muted"><i><strong>Categoria: </strong> {{ obj.categoria }}</i></small>
-							</div>
-						</div>
-<style media="screen">
-	#boton{
-		width: 50px;
-	}
-</style>
-						<br>-->
-					{% endfor %}
+							<!--<div class="card" >
+									<table class="" align="center" width="*%" >
+									<tr><td style="padding: 0px;">
+									<img src="{{ obj.imagen.url }}" style="width: 15rem;" alt="" ></td>
+									<td style="padding-left: 5%;"><div class="card-block">
+								    <h4 class="card-title">{{ obj.titulo }}</h4>
+								  </div>{{ obj.contenido|safe|truncatechars:150 }} </td>
+									</tr></table>
+									<div class="card-footer">
+										<a id="boton" href="{% url 'detail_p' obj.slug %}" class="btn btn-primary" style="width: 100%;">Continuar leyendo</a>
+										<p class="card-text"><small><i><strong>Autor: </strong> {{ obj.user }}</i></small></p>
+										<small class="text-muted"><i><strong>Categoria: </strong> {{ obj.categoria }}</i></small>
+									</div>
+								</div>
+		<style media="screen">
+			#boton{
+				width: 50px;
+			}
+		</style>
+								<br>-->
+			{% endfor %}
 
 <!--
 					<div class="card">

@@ -66,15 +66,20 @@
                     <div class="row" style="padding-bottom: 2%;">
                       <div class="col-3">
                         <select class="form-control auto" name="cantidad">
-                          {% for num in stock %}
-                            <option>{{ num }}</option>
-                          {% endfor %}
+                          {% if stock == "1" %}
+                            <option>1</option>
+                          {% else %}
+                            {% for num in stock %}
+                              <option>{{ num }}</option>
+                            {% endfor %}
+                          {% endif %}
+                          
                         </select>
                       </div>
                     </div>
                     <div class="action">
                       <button class="add-to-cart btn btn-default" type="submit">Añadir al carrito</button>
-                      <a class="like btn btn-default" href="{% url 'productos' %}"><i class="fas fa-chevron-circle-left"></i> Volver</a>
+                      <a class="like btn btn-default" href="{% url 'productos_usua' %}"><i class="fas fa-chevron-circle-left"></i> Volver</a>
                     </div>
                   </form>
                 </div>

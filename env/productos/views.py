@@ -1,16 +1,27 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import producto, factura, detalleFactura, tipoVenta, estadosFactura
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ProductoForm
+from django.db.models import Q
 from django.contrib.auth.models import User
+from posts.models import Post
+from usuario.models import user2
+
+#para imprimir las facturas
+from blogPersonal.utileria import render_to_pdf
+from django.views import View
 
 #para colocar decenas
 import locale
 import time
 
+#para escoger un elemento a la zar de una lista
+import random
+
 # Create your views here.
+
 def producto_create(request):
     form = ProductoForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -38,12 +49,51 @@ def producto_detail(request, slug=None):
     return render(request, "productos/produc_detail.html", context)
 
 def producto_list(request):
-    queryset = producto.objects.all()
+    contact_list = producto.objects.all()
+
+    filtro = request.GET.get('q')
+
+    if filtro:
+        contact_list = producto.objects.filter(
+            Q(titulo__icontains=filtro)|
+            Q(contenido__icontains=filtro)|
+            Q(id__icontains=filtro)
+            )
+
+    paginator = Paginator(contact_list, 5) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    contacts = paginator.get_page(page)
+
     context = {
         "titulo": "list",
-        "object_list": queryset
+        "object_list": contacts
     }
     return render(request, "productos/productos.html", context)
+
+def producto_list_usua(request):
+
+    contact_list = producto.objects.all()
+
+    filtro = request.GET.get('q')
+
+    if filtro:
+        contact_list = producto.objects.filter(
+            Q(titulo__icontains=filtro)|
+            Q(contenido__icontains=filtro)|
+            Q(id__icontains=filtro)
+            )
+
+    paginator = Paginator(contact_list, 20) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    contacts = paginator.get_page(page)
+
+    context = {
+        "titulo": "list",
+        "object_list": contacts
+    }
+    return render(request, "productos/productos_usuarios.html", context)
 
 def producto_update(request, slug=None):
     instance = get_object_or_404(producto, slug=slug)
@@ -60,8 +110,8 @@ def producto_update(request, slug=None):
     }
     return render(request, "productos/produc_form.html", context)
 
-def producto_delete(request, slug=None):
-    instance = get_object_or_404(producto, slug=slug)
+def producto_delete(request, id=None):
+    instance = get_object_or_404(producto, id=id)
     instance.delete()
     messages.success(request, "Producto eliminado")
     return redirect('productos')
@@ -196,42 +246,48 @@ def pagargenerarfactura(request):
         listaproductos = request.session['carrito']
         listacantidades = request.session['cantidades']
 
-        products = zip(listaproductos,listacantidades)
+        cantidadproductos = len(listaproductos)
 
-        us = request.user.id
-        usuario= get_object_or_404(User, id=us)
+        if cantidadproductos == 0:
+            request.session['factura'] = 'error'
+        else:
+            products = zip(listaproductos,listacantidades)
 
-        tipd= get_object_or_404(tipoVenta, id=1)
-        estf= get_object_or_404(estadosFactura, id=1)
+            us = request.user.id
+            usuario= get_object_or_404(User, id=us)
+
+            tipd= get_object_or_404(tipoVenta, id=1)
+            estf= get_object_or_404(estadosFactura, id=1)
 
 
-        p = factura(
-            paisEnvio=request.POST['codpai'],
-            user=usuario,
-            tipo=tipd,
-        )
-        p.save()
-
-        facturas = factura.objects.all()
-        ultimafactura = 0
-        for i in facturas:
-            ultimafactura = i.id
-
-        factur = get_object_or_404(factura, id=ultimafactura)
-
-        for p,c in products:
-            prod = get_object_or_404(producto, id=p)
-            detallef = detalleFactura(
-                idfactura = factur,
-                idProducto = prod,
-                cantidad = c
+            p = factura(
+                paisEnvio=request.POST['codpai'],
+                user=usuario,
+                tipo=tipd,
             )
-            detallef.save()
+            p.save()
+
+            facturas = factura.objects.all()
+            ultimafactura = 0
+            for i in facturas:
+                ultimafactura = i.id
+
+            factur = get_object_or_404(factura, id=ultimafactura)
+
+            for p,c in products:
+                prod = get_object_or_404(producto, id=p)
+                detallef = detalleFactura(
+                    idfactura = factur,
+                    idProducto = prod,
+                    cantidad = c
+                )
+                detallef.save()
 
 
-        request.session['factura'] = 'generada'
-        del request.session['carrito']
-        del request.session['cantidades']
+            request.session['factura'] = 'generada'
+            del request.session['carrito']
+            del request.session['cantidades']
+            
         return redirect('ver_carrito')
 
     except Exception as e:
@@ -241,18 +297,14 @@ def vermisfacturas(request):
     usu = request.user.id
     factu = factura.objects.filter(user=usu)
     
-    filtro = request.GET.get('q')
+    detallesfacturas = []
 
-    if filtro:
-        factu = user2.objects.filter(
-            Q(user__icontains=filtro)|
-            Q(perfil__icontains=filtro)
-            )
+    for f in factu:
+        productos_aso = detalleFactura.objects.filter(idfactura=f.id)
+        detallesfacturas.append(productos_aso)
 
-    paginator = Paginator(factu, 5) # Show 25 contacts per page
 
-    page = request.GET.get('page')
-    factu = paginator.get_page(page)
+    factu = zip(factu,detallesfacturas)
 
     contexto = {
         'contacts': factu,
@@ -261,24 +313,100 @@ def vermisfacturas(request):
 
 def todaslasfacturas(request):
     factu = factura.objects.all()
-    
-    filtro = request.GET.get('q')
 
-    if filtro:
-        factu = user2.objects.filter(
-            Q(user__icontains=filtro)|
-            Q(perfil__icontains=filtro)
-            )
+    detallesfacturas = []
 
-    paginator = Paginator(factu, 5) # Show 25 contacts per page
+    for f in factu:
+        productos_aso = detalleFactura.objects.filter(idfactura=f.id)
+        detallesfacturas.append(productos_aso)
 
-    page = request.GET.get('page')
-    factu = paginator.get_page(page)
 
+    factu = zip(factu,detallesfacturas)
+
+    permiso = 'admin'
     contexto = {
         'contacts': factu,
+        'permiso':permiso
     }   
     return render(request, 'productos/misfacturas.html', contexto)
+
+
+def adjuntar_factura(request, id):
+    f = factura.objects.get(id=id)
+    f.comprobacion = request.FILES['compru']
+    f.save()
+    return redirect('misfacturas')
+
+
+def imprimirFactura(request,id,*tags, **kwargs):
+    fact = get_object_or_404(factura,id=id)
+    prods = detalleFactura.objects.filter(idfactura=fact.id)
+    data = {
+        'nombreusu' : fact,
+        'productos' : prods,
+    }
+    pdf =  render_to_pdf("productos/imprimirFactura.html",data)
+    return HttpResponse(pdf, content_type="application/pdf")
+
+def informeDeVenta(request,id,*tags, **kwargs):
+
+    usuarios = User.objects.all()
+    usurs = 0
+    for obj in usuarios:
+        usurs = usurs + 1
+
+    product = producto.objects.all()
+    prods = 0
+    for obj in product:
+        prods = prods + 1
+
+    publicaciones = Post.objects.all()
+    Posts = 0
+    for obj in publicaciones:
+        Posts = Posts + 1
+
+    empleados = user2.objects.filter(perfil=4)
+    empls = 0
+    for obj in empleados:
+        empls = empls + 1
+
+    #podemos crear una clase que se llame motivador, para que esta con un método nos arroje una frase aleatoria para cuando queramos
+
+    frases = ['Cuando vas por algo, no regreses hasta que lo consigas.','Tener grandes espectativas es la clave de todo.'
+    ,'Lo que separa a los emprendedores exitosos de los no exitosos es la perseverancia.',
+    'Quizas aun no llego a mi meta,pero hoy estoy mas cerca de lo que estaba ayer.',
+    'La inspiracion existe, pero debe encontrarte trabajando by picaso.',
+    'No hay aboslutamente nunguna otra forma de trinfar en la vida si no es por el constante esfuerzo by arnold schwarzenegger.',
+    'Confia en ti mismo no importa lo que los demás piensen by arnold schwarzenegger.',
+    'Cuando alguien hace lo que ama se nota, cuando no amas lo que haces,se nota aún más by steve jobs.',
+    'Si tu no trabajas por tus sueños, alguien te contratará para que trabajes por los suyos by steve jobs.',
+    'La innovación es lo que distingue a los lideres de los seguidores by steve jobs.',
+    'No creo compañias solo por crearlas, sino para que logren cosas by elonk musk.',
+    'Creo que es posible que la gente normal elija ser extraordinaria by Elon musk.',
+    'La vida es demasiado corta para rencores a largo plazo.'
+    ]
+
+    frase = random.choice(frases)
+
+    #sacar el total de ventas del mes y sacar las del mes anterior para saber si aumentaron o no
+
+    #cantidad de productos vendidos
+
+    data = {
+        'usuarios' : usurs,
+        'productos' : prods,
+        'publicaciones' : Posts,
+        'empleados' : empls,
+        'fraseMotivacional' : frase,
+        'totalVentas':ventas,
+    }
+    pdf =  render_to_pdf("empresa/informeDeVentas.html",data)
+    return HttpResponse(pdf, content_type="application/pdf")
+
+
+
+    
+
 
 
 

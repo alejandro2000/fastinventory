@@ -29,7 +29,7 @@
 					        </div>
 					      </li>
 					      <li class="nav-item">
-					        <a class="nav-link" href="{% url 'productos' %}">Tienda</a>
+					        <a class="nav-link" href="{% url 'productos_usua' %}">Tienda</a>
 					      </li>
 					    </ul>
 					    <ul class="navbar-nav justify-content-center">
@@ -60,9 +60,9 @@
 							          <a class="dropdown-item" href="{% url 'perfilUsuario_u' user.username %}">Perfil</a>
 							          <a class="dropdown-item" href="{% url 'misacciones' %}">Panel de Admin.</a>
 							          <div class="dropdown-divider"></div>
+							          <a class="dropdown-item" href="{% url 'misdeseos' %}">Productos favoritos</a>
+							          <a class="dropdown-item" href="#">Publicaciones favoritas</a>
 							          <a class="dropdown-item" href="{% url 'misfacturas' %}">Mis facturas</a>
-							          <a class="dropdown-item" href="{% url 'quienesSomos_p' %}">Quienes Somos</a>
-							          <a class="dropdown-item" href="{% url 'politicas_p' %}">Info. Empresa</a>
 							        </div>
 							    </li>
 							    <li class="nav-item">

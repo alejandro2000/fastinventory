@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', login_required(views.post_list), name='list_p'),
+    path('publicacion', login_required(views.post_list_panel), name='list_admin'),
     path('tecnologia/', login_required(views.list_tecnologia), name='list_tecnologia'),
     path('cine', login_required(views.list_cine), name='list_cine'),
     path('deportes', login_required(views.list_deportes), name='list_deportes'),

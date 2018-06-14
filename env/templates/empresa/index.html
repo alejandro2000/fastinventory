@@ -64,7 +64,7 @@
 					        </div>
 					      </li>
 					      <li class="nav-item">
-					        <a class="nav-link" href="{% url 'productos' %}">Tienda</a>
+					        <a class="nav-link" href="{% url 'productos_usua' %}">Tienda</a>
 					      </li>
 					      <li class="nav-item">
 					        <a class="nav-link" href="#seccion1">quienes somos</a>
@@ -103,7 +103,10 @@
 							        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							          <a class="dropdown-item" href="{% url 'perfilUsuario_u' user.username %}">Perfil</a>
 							          <a class="dropdown-item" href="{% url 'misacciones' %}">Panel de Admin.</a>
-							          <a class="dropdown-item" href="{% url 'ver_carrito' %}">Mi carrito</a>
+							          <div class="dropdown-divider"></div>
+							          <a class="dropdown-item" href="{% url 'misdeseos' %}">Productos favoritos</a>
+							          <a class="dropdown-item" href="#">Publicaciones favoritas</a>
+							          <a class="dropdown-item" href="{% url 'misfacturas' %}">Mis facturas</a>
 							        </div>
 							    </li>
 							    <li class="nav-item">
